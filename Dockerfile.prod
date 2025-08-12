@@ -1,0 +1,20 @@
+FROM node:18
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+COPY prisma ./prisma
+
+RUN npm install --only=production
+
+RUN npx prisma generate
+
+COPY . .
+
+# Build the TypeScript application
+RUN npm run build
+
+EXPOSE 3000
+
+# Production mode - serve optimized build
+CMD ["npm", "start"]

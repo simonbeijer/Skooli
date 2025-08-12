@@ -1,0 +1,36 @@
+# robots.txt for security and SEO management
+
+# Allow search engines to index public content
+User-agent: *
+Allow: /
+Allow: /login
+
+# Disallow crawling of sensitive areas
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /_next/
+Disallow: /_vercel/
+Disallow: /logs/
+Disallow: /.env
+Disallow: /.git/
+Disallow: /node_modules/
+
+# Security: Block common vulnerability scanners
+User-agent: sqlmap
+Disallow: /
+
+User-agent: nikto
+Disallow: /
+
+User-agent: w3af
+Disallow: /
+
+User-agent: skipfish
+Disallow: /
+
+# Rate limiting for aggressive crawlers
+Crawl-delay: 1
+
+# Sitemap location (uncomment when available)
+# Sitemap: https://yourdomain.com/sitemap.xml
