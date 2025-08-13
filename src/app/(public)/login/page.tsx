@@ -50,7 +50,8 @@ export default function Login() {
         console.log('🎉 Login successful for user:', data.user.email);
         console.log('🚀 Redirecting to dashboard...');
         setUser(data.user);
-        router.push("/dashboard");
+        // Use window.location for full page redirect to ensure cookies are properly set
+        window.location.href = "/dashboard";
       } else {
         console.error('❌ Login failed:', response.status);
         setError(true);
