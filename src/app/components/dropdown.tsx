@@ -134,7 +134,7 @@ const Dropdown = ({
       </button>
       
       <div
-        className={`transition-all duration-300 transform absolute right-0 mt-2 p-4 border rounded-2xl shadow-lg text-right bg-white/90 backdrop-blur-sm border-white/50 min-w-[200px] z-50 ${
+        className={`transition-all duration-300 transform absolute right-0 mt-2 p-4 border rounded-2xl shadow-lg text-right bg-white/90 backdrop-blur-sm border-white/50 min-w-[200px] z-[100] ${
           isOpen
             ? "opacity-100 scale-100 pointer-events-auto"
             : "opacity-0 scale-95 pointer-events-none"
