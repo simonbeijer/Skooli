@@ -111,15 +111,15 @@ const Modal = ({
     >
       <div 
         ref={modalRef}
-        className={`bg-background rounded-lg shadow-xl border border-grey w-full ${sizeClasses[size]} max-h-[90vh] overflow-auto ${className}`.trim()}
+        className={`bg-white rounded-lg shadow-xl border border-gray-200 w-full ${sizeClasses[size]} max-h-[90vh] overflow-auto ${className}`.trim()}
         onKeyDown={handleKeyDown}
         tabIndex={-1}
       >
         {/* Header */}
         {(title || showClose) && (
-          <div className="flex items-center justify-between p-6 border-b border-grey">
+          <div className="flex items-center justify-between p-6 border-b border-gray-200">
             {title && (
-              <h2 id="modal-title" className="text-lg font-semibold text-foreground">
+              <h2 id="modal-title" className="text-lg font-semibold text-[#1C1C1C]">
                 {title}
               </h2>
             )}

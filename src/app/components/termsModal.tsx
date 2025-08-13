@@ -33,10 +33,10 @@ const CheckboxField = ({ id, checked, onChange, children, required }: CheckboxFi
       type="checkbox"
       checked={checked}
       onChange={(e) => onChange(e.target.checked)}
-      className="mt-1 w-4 h-4 text-primary bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-500 rounded focus:ring-primary focus:ring-2 transition-colors"
+      className="mt-1 w-4 h-4 text-[#3E8E7E] bg-white border-[#E6F2F1] rounded focus:ring-[#3E8E7E] focus:ring-2 transition-colors"
       required={required}
     />
-    <span className="text-sm text-gray-900 dark:text-gray-100 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
+    <span className="text-sm font-inter text-[#1C1C1C] group-hover:text-[#333] transition-colors">
       {children}
     </span>
   </label>
@@ -51,19 +51,19 @@ interface NoticeCardProps {
 
 const NoticeCard = ({ icon, title, children, variant = 'info' }: NoticeCardProps) => {
   const variantClasses = {
-    warning: 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800',
-    info: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800'
+    warning: 'bg-[#88C9BF]/10 border-[#88C9BF]/30',
+    info: 'bg-[#A4D4AE]/10 border-[#A4D4AE]/30'
   };
 
   return (
-    <div className={`border rounded-lg p-4 ${variantClasses[variant]}`}>
-      <div className="flex items-start space-x-3">
+    <div className={`border rounded-3xl p-6 ${variantClasses[variant]} backdrop-blur-sm`}>
+      <div className="flex items-start space-x-4">
         <div className="flex-shrink-0 mt-1">
           {icon}
         </div>
-        <div className="text-sm text-left pt-1">
-          <p className="font-semibold text-gray-900 dark:text-gray-100 mb-2">{title}</p>
-          <div className="text-gray-600 dark:text-gray-300">
+        <div className="text-sm text-left pt-1 font-inter">
+          <p className="font-semibold text-[#1C1C1C] mb-2">{title}</p>
+          <div className="text-[#333] leading-relaxed">
             {children}
           </div>
         </div>
@@ -113,22 +113,22 @@ const TermsModal = ({
       isOpen={isOpen} 
       onClose={handleModalClose} 
       showClose={showClose}
-      title="Terms of Use & Privacy Notice"
+      title="Användarvillkor & Integritetspolicy"
       size="xl"
       closeOnBackdropClick={false}
     >
-      <div className="max-w-4xl mx-auto space-y-6">
+      <div className="max-w-4xl mx-auto space-y-6 bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-white/50 shadow-lg relative z-20">
         {/* Disclaimer Section */}
         <NoticeCard
           variant="warning"
-          icon={<ExclamationTriangleIcon className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />}
-          title="Important Disclaimer"
+          icon={<ExclamationTriangleIcon className="h-5 w-5 text-[#3E8E7E]" />}
+          title="Viktig Information"
         >
           {customTermsContent || (
             <p>
-              This application provides web services and functionality. Use at your own risk. 
-              We bear no responsibility for any outcomes or consequences arising from the use of this service. 
-              Always verify information and use your own judgment when making decisions.
+              Denna applikation tillhandahåller webbtjänster och funktionalitet. Använd på egen risk. 
+              Vi tar inget ansvar för eventuella resultat eller konsekvenser som uppstår från användningen av denna tjänst. 
+              Verifiera alltid information och använd ditt eget omdöme när du fattar beslut.
             </p>
           )}
         </NoticeCard>
@@ -136,28 +136,28 @@ const TermsModal = ({
         {/* Privacy Notice Section */}
         <NoticeCard
           variant="info"
-          icon={<InformationCircleIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />}
-          title="Data Processing Notice"
+          icon={<InformationCircleIcon className="h-5 w-5 text-[#3E8E7E]" />}
+          title="Databehandlingsmeddelande"
         >
           {customPrivacyContent || (
             <p>
-              This service processes user data to provide functionality. Your information 
-              may be stored and processed according to our privacy policies. 
-              Please avoid sharing sensitive personal information.
+              Denna tjänst behandlar användardata för att tillhandahålla funktionalitet. Din information 
+              kan lagras och behandlas enligt våra integritetspolicyer. 
+              Vänligen undvik att dela känslig personlig information.
             </p>
           )}
         </NoticeCard>
 
         {/* Consent Checkboxes */}
-        <div className="space-y-4 mb-6 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border">
+        <div className="space-y-4 mb-6 p-6 bg-[#F0F7F6] rounded-3xl border border-[#E6F2F1]">
           <CheckboxField
             id="terms-checkbox"
             checked={termsAccepted}
             onChange={setTermsAccepted}
             required
           >
-            I agree to the Terms of Service and acknowledge the limitations and disclaimers stated above. 
-            I understand this service is provided as-is.
+            Jag godkänner användarvillkoren och erkänner begränsningarna och ansvarsfriskrivningarna som anges ovan. 
+            Jag förstår att denna tjänst tillhandahålls i befintligt skick.
           </CheckboxField>
 
           <CheckboxField
@@ -166,21 +166,21 @@ const TermsModal = ({
             onChange={setPrivacyAccepted}
             required
           >
-            I consent to the processing of my data as described above and understand that my information 
-            will be processed by this service to provide the requested functionality.
+            Jag samtycker till behandlingen av mina data enligt beskrivningen ovan och förstår att min information 
+            kommer att behandlas av denna tjänst för att tillhandahålla den begärda funktionaliteten.
           </CheckboxField>
         </div>
 
         {/* Accept Button */}
         <div className="text-center pt-4">
           <Button
-            variant={canProceed ? "primary" : "secondary"}
+            variant={canProceed ? "primary" : "outline"}
             size="lg"
             callBack={handleAcceptTerms}
             disabled={!canProceed}
             className="min-w-[200px]"
           >
-            {canProceed ? "Accept & Continue" : "Please accept terms to continue"}
+            {canProceed ? "Acceptera & Fortsätt" : "Vänligen acceptera villkoren för att fortsätta"}
           </Button>
         </div>
       </div>

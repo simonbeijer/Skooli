@@ -44,7 +44,7 @@ const Header = ({ state }: HeaderProps) => {
   };
 
   return (
-    <nav className="relative z-50 mt-12 mb-4">
+    <nav className="relative z-10 mt-12 mb-4">
       <div className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
         
         {/* Left section - Brand Logo */}
