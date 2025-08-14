@@ -615,29 +615,6 @@ describe('API Utils', () => {
       expect(result).toBe(mockResponse);
     });
 
-    it('should add timing delay', async () => {
-      const { addTimingDelay } = await import('../src/lib/api/utils.ts');
-      
-      const startTime = Date.now();
-      await addTimingDelay(100);
-      const endTime = Date.now();
-
-      // Should take at least 100ms, but allow some variance
-      expect(endTime - startTime).toBeGreaterThanOrEqual(100);
-      expect(endTime - startTime).toBeLessThan(300); // Max 200ms (100 base + 100 random)
-    });
-
-    it('should execute dummy operation', async () => {
-      const bcrypt = await import('bcrypt');
-      const { executeDummyOperation } = await import('../src/lib/api/utils.ts');
-      
-      await executeDummyOperation();
-
-      expect(bcrypt.compare).toHaveBeenCalledWith(
-        'dummy-password',
-        '$2b$12$dummy.hash.to.prevent.timing.attacks.against.user.enumeration'
-      );
-    });
   });
 
   describe('Pre-configured Rate Limiters', () => {

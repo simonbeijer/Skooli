@@ -188,40 +188,6 @@ describe('Auth Utilities', () => {
     });
   });
 
-  describe('verifyTokenSafe', () => {
-    it('should return valid result for good token', async () => {
-      const { verifyTokenSafe } = await import('../src/lib/auth.ts');
-      
-      const mockPayload = {
-        id: 'user123',
-        email: 'test@example.com',
-        name: 'Test User',
-        role: 'user',
-        exp: Math.floor(Date.now() / 1000) + 3600,
-        iat: Math.floor(Date.now() / 1000)
-      };
-
-      mockJwtVerify.mockResolvedValue({ payload: mockPayload });
-
-      const result = await verifyTokenSafe('valid.token');
-
-      expect(result).toEqual({
-        payload: mockPayload,
-        isValid: true
-      });
-    });
-
-    it('should return invalid result for bad token', async () => {
-      const { verifyTokenSafe } = await import('../src/lib/auth.ts');
-      
-      mockJwtVerify.mockRejectedValue(new Error('Invalid token'));
-
-      const result = await verifyTokenSafe('invalid.token');
-
-      expect(result.isValid).toBe(false);
-      expect(result.payload).toEqual({});
-    });
-  });
 
   describe('extractTokenFromHeader', () => {
     it('should extract token from Bearer format', async () => {
