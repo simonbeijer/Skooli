@@ -25,14 +25,12 @@ export interface SecurityLogEvent {
 export interface RateLimitConfig {
   maxAttempts: number;
   windowMs: number;
-  blockDurationMs?: number;
 }
 
 export interface RateLimitResult {
   allowed: boolean;
   remaining: number;
   resetTime: number;
-  blocked?: boolean;
 }
 
 // ============================================================================
@@ -41,25 +39,15 @@ export interface RateLimitResult {
 
 /**
  * Extract client IP address from request headers
- * Handles various proxy configurations and load balancers
  */
 export const getClientIP = (request: NextRequest): string => {
-  // Check common headers for client IP
   const forwardedFor = request.headers.get('x-forwarded-for');
-  const realIP = request.headers.get('x-real-ip');
-  const cfConnectingIP = request.headers.get('cf-connecting-ip');
   
-  // x-forwarded-for can contain multiple IPs, take the first one
   if (forwardedFor) {
     const ips = forwardedFor.split(',').map(ip => ip.trim());
     return ips[0] || '127.0.0.1';
   }
   
-  // Other headers typically contain single IP
-  if (cfConnectingIP) return cfConnectingIP;
-  if (realIP) return realIP;
-  
-  // Fallback to localhost
   return '127.0.0.1';
 };
 
@@ -75,8 +63,7 @@ export const getUserAgent = (request: NextRequest): string => {
 // ============================================================================
 
 /**
- * Log security events with structured data
- * Differentiates between development and production logging
+ * Log security events with basic data
  */
 export const logSecurityEvent = (
   event: string,
@@ -84,27 +71,16 @@ export const logSecurityEvent = (
   request?: NextRequest,
   userId?: string
 ): void => {
-  const logEntry: SecurityLogEvent = {
+  const logEntry = {
     timestamp: new Date().toISOString(),
     event,
-    details,
-    ...(request && { ip: getClientIP(request) }),
-    ...(request && { userAgent: getUserAgent(request) }),
-    ...(userId && { userId })
+    userId
   };
   
   if (process.env.NODE_ENV === 'production') {
-    // In production, use structured JSON logging for monitoring systems
     console.log('SECURITY_EVENT:', JSON.stringify(logEntry));
   } else {
-    // In development, use more readable format
-    console.warn('Security Event:', {
-      event: logEntry.event,
-      details: logEntry.details,
-      ip: logEntry.ip,
-      timestamp: logEntry.timestamp,
-      userId: logEntry.userId
-    });
+    console.warn('Security Event:', logEntry);
   }
 };
 
@@ -155,8 +131,7 @@ export const logAPIError = (
 // ============================================================================
 
 // In-memory rate limiting store
-// In production, consider using Redis or similar distributed cache
-const rateLimitStore = new Map<string, { attempts: number[], blockedUntil?: number }>();
+const rateLimitStore = new Map<string, { attempts: number[] }>();
 
 /**
  * Simple in-memory rate limiter
@@ -178,8 +153,7 @@ export class RateLimiter {
       return {
         allowed: true,
         remaining: this.config.maxAttempts,
-        resetTime: Date.now() + this.config.windowMs,
-        blocked: false
+        resetTime: Date.now() + this.config.windowMs
       };
     }
     
@@ -191,16 +165,6 @@ export class RateLimiter {
     if (!entry) {
       entry = { attempts: [] };
       rateLimitStore.set(identifier, entry);
-    }
-    
-    // Check if currently blocked
-    if (entry.blockedUntil && now < entry.blockedUntil) {
-      return {
-        allowed: false,
-        remaining: 0,
-        resetTime: entry.blockedUntil,
-        blocked: true
-      };
     }
     
     // Remove expired attempts
@@ -217,8 +181,7 @@ export class RateLimiter {
     return {
       allowed,
       remaining,
-      resetTime,
-      blocked: false
+      resetTime
     };
   }
   
@@ -235,11 +198,6 @@ export class RateLimiter {
     }
     
     entry.attempts.push(now);
-    
-    // If block duration is configured and limit exceeded, set block time
-    if (this.config.blockDurationMs && entry.attempts.length >= this.config.maxAttempts) {
-      entry.blockedUntil = now + this.config.blockDurationMs;
-    }
   }
   
   /**
@@ -253,13 +211,12 @@ export class RateLimiter {
 // Pre-configured rate limiters for common use cases
 export const loginRateLimiter = new RateLimiter({
   maxAttempts: 5,
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  blockDurationMs: 60 * 60 * 1000 // 1 hour block after limit exceeded
+  windowMs: 15 * 60 * 1000 // 15 minutes
 });
 
 export const generalAPIRateLimiter = new RateLimiter({
   maxAttempts: 100,
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 15 * 60 * 1000 // 15 minutes
 });
 
 // ============================================================================
@@ -431,26 +388,3 @@ export const addSecurityHeaders = <T>(response: NextResponse<T>): NextResponse<T
   return response;
 };
 
-// ============================================================================
-// TIMING ATTACK PREVENTION
-// ============================================================================
-
-/**
- * Add consistent timing delay to prevent timing attacks
- * Useful for login/authentication endpoints
- */
-export const addTimingDelay = async (baseDelayMs: number = 100): Promise<void> => {
-  const randomDelay = Math.floor(Math.random() * baseDelayMs);
-  await new Promise(resolve => setTimeout(resolve, baseDelayMs + randomDelay));
-};
-
-/**
- * Execute a dummy operation to normalize timing
- * Used when user doesn't exist to prevent user enumeration
- */
-export const executeDummyOperation = async (): Promise<void> => {
-  // Simulate bcrypt comparison timing
-  const dummyHash = "$2b$12$dummy.hash.to.prevent.timing.attacks.against.user.enumeration";
-  const bcrypt = await import("bcrypt");
-  await bcrypt.compare("dummy-password", dummyHash);
-};

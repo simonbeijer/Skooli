@@ -240,36 +240,7 @@ export interface UseFormReturn<T = Record<string, unknown>> {
 // ============================================================================
 // TYPE GUARDS
 // ============================================================================
-
-export const isSelectOption = (obj: unknown): obj is SelectOption => {
-  return (
-    typeof obj === 'object' &&
-    obj !== null &&
-    'value' in obj &&
-    'label' in obj &&
-    typeof (obj as SelectOption).value === 'string' &&
-    typeof (obj as SelectOption).label === 'string'
-  );
-};
-
-export const isOptionGroup = (obj: unknown): obj is OptionGroup => {
-  return (
-    typeof obj === 'object' &&
-    obj !== null &&
-    'label' in obj &&
-    'options' in obj &&
-    typeof (obj as OptionGroup).label === 'string' &&
-    Array.isArray((obj as OptionGroup).options)
-  );
-};
-
-export const isFormErrors = (obj: unknown): obj is FormErrors => {
-  return (
-    typeof obj === 'object' &&
-    obj !== null &&
-    Object.values(obj).every(value => typeof value === 'string')
-  );
-};
+// No type guards currently needed for forms
 
 // ============================================================================
 // UTILITY TYPES

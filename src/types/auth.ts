@@ -113,21 +113,6 @@ export interface AuthError extends Error {
 // TYPE GUARDS
 // ============================================================================
 
-export const isUser = (obj: unknown): obj is User => {
-  return (
-    typeof obj === 'object' &&
-    obj !== null &&
-    'id' in obj &&
-    'email' in obj &&
-    'name' in obj &&
-    'role' in obj &&
-    typeof (obj as User).id === 'string' &&
-    typeof (obj as User).email === 'string' &&
-    typeof (obj as User).name === 'string' &&
-    ['user', 'admin'].includes((obj as User).role)
-  );
-};
-
 export const isJWTPayload = (obj: unknown): obj is JWTPayload => {
   return (
     typeof obj === 'object' &&
@@ -144,14 +129,6 @@ export const isJWTPayload = (obj: unknown): obj is JWTPayload => {
     typeof (obj as JWTPayload).role === 'string' &&
     typeof (obj as JWTPayload).exp === 'number' &&
     typeof (obj as JWTPayload).iat === 'number'
-  );
-};
-
-export const isAuthError = (error: unknown): error is AuthError => {
-  return (
-    error instanceof Error &&
-    'code' in error &&
-    typeof (error as AuthError).code === 'string'
   );
 };
 

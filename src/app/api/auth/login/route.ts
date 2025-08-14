@@ -21,8 +21,7 @@ import {
   handleInternalError,
   createSuccessResponse,
   parseRequestBody,
-  addSecurityHeaders,
-  executeDummyOperation
+  addSecurityHeaders
 } from "@/lib/api/utils";
 
 // ============================================================================
@@ -50,8 +49,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<LoginResp
     if (!rateLimitResult.allowed) {
       logSecurityEvent('login_rate_limit_exceeded', {
         ip: clientIP,
-        remaining: rateLimitResult.remaining,
-        blocked: rateLimitResult.blocked
+        remaining: rateLimitResult.remaining
       }, request);
       
       return handleRateLimitExceeded(rateLimitResult.resetTime);
@@ -108,15 +106,12 @@ export async function POST(request: NextRequest): Promise<NextResponse<LoginResp
     });
 
     // ========================================================================
-    // USER NOT FOUND - TIMING ATTACK PREVENTION
+    // USER NOT FOUND
     // ========================================================================
     
     if (!user) {
       // Record failed attempt for rate limiting
       loginRateLimiter.recordAttempt(clientIP);
-      
-      // Execute dummy operation to prevent timing attacks
-      await executeDummyOperation();
       
       logSecurityEvent('login_user_not_found', {
         attempted_email: email,
