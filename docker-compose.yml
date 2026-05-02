@@ -7,6 +7,8 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+    env_file:
+      - .env
     environment:
       - DATABASE_URL=postgresql://simon:S1m0n@postgres:5432/skooli
       - CHOKIDAR_USEPOLLING=true

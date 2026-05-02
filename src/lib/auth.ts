@@ -41,8 +41,15 @@ const getJWTSecret = (): string => {
   return secret;
 };
 
-// Cache the secret after validation
-const JWT_SECRET = getJWTSecret();
+// Lazy-loaded encoded secret. Avoids throwing at module init so `next build`
+// can collect page data without requiring runtime env vars.
+let cachedSecret: Uint8Array | null = null;
+const getEncodedSecret = (): Uint8Array => {
+  if (!cachedSecret) {
+    cachedSecret = new TextEncoder().encode(getJWTSecret());
+  }
+  return cachedSecret;
+};
 
 // ============================================================================
 // JWT CREATION UTILITIES
@@ -64,7 +71,7 @@ export const createToken = async (user: User): Promise<string> => {
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .setExpirationTime('2h')
-      .sign(new TextEncoder().encode(JWT_SECRET));
+      .sign(getEncodedSecret());
 
     return token;
   } catch (error) {
@@ -91,7 +98,7 @@ export const verifyAuth = async (token: string): Promise<JWTPayload> => {
   try {
     const { payload } = await jose.jwtVerify(
       token,
-      new TextEncoder().encode(JWT_SECRET)
+      getEncodedSecret()
     );
 
     // Type guard to ensure payload matches our expected structure
