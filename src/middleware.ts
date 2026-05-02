@@ -53,6 +53,7 @@ const rateLimitStore = new Map<string, RateLimitEntry>();
 const PUBLIC_PATHS = new Set([
   '/',
   '/login',
+  '/demo',
   '/api/auth/login',
   '/api/auth/logout',
 ]);
