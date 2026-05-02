@@ -211,8 +211,14 @@ export default function ResultsPage() {
               Din Lektionsplan är Klar!
             </h2>
             <p className="text-[#333]">
-              Genererad enligt Läroplanen för {formData.subjects} - Årskurs{" "}
-              {formData.grade}
+              Genererad enligt Läroplanen för • {formData.theme} • åk {formData.grade} • {formData.subjects} • {(
+                {
+                  "1-vecka": "1 vecka",
+                  "2-veckor": "2 veckor",
+                  "3-veckor": "3 veckor",
+                  "1-manad": "1 månad",
+                } as Record<string, string>
+              )[formData.duration] || formData.duration}
             </p>
           </div>
         </div>
@@ -267,8 +273,8 @@ export default function ResultsPage() {
           </Button>
         </div>
 
-        {/* Lesson Plan Content */}
-        <div className="bg-white rounded-3xl p-8 border border-[#E6F2F1]">
+        {/* Lesson Plan Content — Option C: high contrast with accent border */}
+        <div className="bg-white rounded-2xl p-10 shadow-lg border border-[#3E8E7E]/20 border-t-4 border-t-[#3E8E7E]">
           <div className="text-[#1C1C1C] leading-relaxed max-w-none">
             <ReactMarkdown 
               components={{
@@ -280,6 +286,7 @@ export default function ResultsPage() {
                 ol: ({children}) => <ol className="mb-6 space-y-2 pl-6">{children}</ol>,
                 li: ({children}) => <li className="text-[#1C1C1C] list-disc">{children}</li>,
                 strong: ({children}) => <strong className="font-bold text-[#1C1C1C]">{children}</strong>,
+                hr: () => null,
               }}
             >
               {lessonPlan}
