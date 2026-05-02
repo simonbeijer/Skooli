@@ -10,6 +10,7 @@ import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/ge
 import { NextRequest, NextResponse } from "next/server";
 import { findRelevantCurriculum } from "@/lib/curriculum-data";
 import { verifyAuth } from "@/lib/auth";
+import { logPrompt } from "@/lib/prompt-logger";
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -174,66 +175,50 @@ function generateEnhancedSwedishPrompt(
   const subjectsArray = formData.subjects.split(',').map(s => s.trim()).filter(Boolean);
   const subjectList = subjectsArray.join(", ");
 
-  return `Du är en erfaren svensk lärare som skapar detaljerade lektionsplaner enligt Lgr22. 
+  return `Du är en erfaren svensk lärare som skriver övergripande lektionsförslag enligt Lgr22.
 
 **UPPDRAG:**
-Skapa en komplett lektionsplan för temat "${formData.theme}" för årskurs ${formData.grade} inom ämnena ${subjectList}. Lektionen ska vara ${formData.duration} lång.
+Skriv ett övergripande förslag på lektionsplan för temat "${formData.theme}", årskurs ${formData.grade}, ämnen ${subjectList}. Period: ${formData.duration}.
+
+**OMFATTNING:**
+Det här är ett förslag som läraren ska kunna anpassa — inte ett minutpreciserat schema. Använd uppskattade tidsangivelser (t.ex. "ca 30 min") snarare än exakta klockslag. Skala längden efter period: kortare period = kortare plan. Sikta på det som verkligen är användbart, undvik utfyllnad och upprepningar.
+
+**FORMAT:**
+Börja svaret direkt med första rubriken (# 📚 Lektionsplan: ...). Skriv ingen inledande mening eller sammanfattning innan rubriken. Använd inga horisontella linjer (---) någonstans i texten.
 
 **CURRICULAR KONTEXT:**
 ${curriculumContext}
 
-**OBLIGATORISKA KRAV (Lgr22-compliance):**
-- Referera explicit till centralt innehåll från Lgr22
-- Specificera vilka förmågor som utvecklas
-- Inkludera kunskapskrav och bedömningskriterier  
-- Använd korrekt svensk pedagogisk terminologi
-- Säkerställ progression och variation
-- Inkludera differentiering för olika elevers behov
+**RIKTLINJER:**
+- Referera till relevant centralt innehåll från Lgr22 där det passar
+- Nämn vilka förmågor som utvecklas
+- Använd svensk pedagogisk terminologi
+- Anpassa språk och innehåll till årskursen
 
-**STRUKTUR (använd markdown med emojis):**
+**STRUKTUR (markdown med emojis):**
 # 📚 Lektionsplan: ${formData.theme}
 
 ## 🎯 Syfte och mål
-- Koppling till Lgr22 centralt innehåll
-- Förmågor som utvecklas
-- Lärandemål för lektionen
+- **Koppling till Lgr22 centralt innehåll:** ange relevant centralt innehåll
+- **Förmågor som utvecklas:** kort lista
+- **Lärandemål:** vad eleverna ska kunna efter perioden
 
-## ⏰ Lektionsstruktur (${formData.duration})
-- Detaljerad tidsindelning
-- Aktiviteter med tydliga instruktioner
-- Övergångar mellan aktiviteter
+## ⏰ Översikt (${formData.duration})
+Övergripande upplägg över perioden med uppskattad tidsåtgång per moment. Inga minutscheman.
 
-## 🎭 Aktiviteter och metoder
-- Varierade arbetsformer
-- Konkreta genomföranden
-- Elevengagemang och delaktighet
+## 🎭 Aktiviteter och arbetssätt
+Förslag på varierade arbetsformer (individuellt, par, grupp) och konkreta exempel på aktiviteter.
 
-## 🔍 Bedömning och uppföljning
-- Formativ bedömning under lektionen
-- Kunskapskrav som bedöms
-- Dokumentation och återkoppling
+## 🔍 Bedömning
+Hur läraren kan följa elevernas progression — formativ bedömning och eventuella kunskapskrav.
 
-## 📖 Material och resurser
-- Konkreta material som behövs
-- Digitala verktyg om tillämpligt
-- Förberedelser för läraren
+## 📖 Material
+Vilka material och resurser som föreslås.
 
-## 🌟 Differentiering och anpassningar
-- Stöd för elever som behöver extra hjälp
-- Utmaningar för elever som behöver fördjupning
-- Språkstöd och tillgänglighet
-
-${formData.notes ? `\n**SÄRSKILDA ÖNSKEMÅL:**\n${formData.notes}` : ''}
-
-**KVALITETSKRAV:**
-- Använd konkreta svenska exempel och referenser
-- Inkludera praktiska genomföranden, inte bara teorier
-- Säkerställ att alla aktiviteter har tydliga instruktioner
-- Balansera individuellt arbete, par- och grupparbete
-- Föreslå realistiska material som finns på svenska skolor
-- Anpassa språknivå och innehåll för vald årskurs
-
-Skapa en inspirerande och genomförbar lektionsplan som följer svensk skolkultur och Lgr22!`;
+## 🌟 Anpassningar
+Kort om stöd för elever som behöver extra hjälp respektive utmaning.
+${formData.notes ? `\n**SÄRSKILDA ÖNSKEMÅL:**\n${formData.notes}\n` : ''}
+Skriv som ett genomtänkt förslag läraren kan utgå från och göra till sitt eget.`;
 }
 
 // ============================================================================
@@ -245,12 +230,12 @@ async function generatePlanWithGemini(prompt: string, apiKey: string): Promise<s
     const genAI = new GoogleGenerativeAI(apiKey);
     
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-2.0-flash-exp",
+      model: process.env.GEMINI_MODEL,
       generationConfig: {
         temperature: 0.3,
         topP: 0.8,
         topK: 40,
-        maxOutputTokens: 2048,
+        maxOutputTokens: 8192,
       },
       safetySettings: [
         {
@@ -295,11 +280,11 @@ async function generatePlanWithGemini(prompt: string, apiKey: string): Promise<s
 // ============================================================================
 
 async function generatePlanWithRetries(
-  formData: GeminiAPIRequest, 
-  curriculumContext: string, 
-  apiKey: string
+  formData: GeminiAPIRequest,
+  curriculumContext: string,
+  apiKey: string,
+  prompt: string
 ): Promise<{ plan: string; metadata: GeminiAPIResponse['metadata'] }> {
-  const prompt = generateEnhancedSwedishPrompt(formData, curriculumContext);
   let bestAttempt: { plan: string; score: number; issues: string[] } | null = null;
   
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
@@ -426,12 +411,17 @@ export async function POST(request: NextRequest): Promise<NextResponse<GeminiAPI
         ).join('\n\n')
       : `**OBS:** Ingen specifik curriculum hittades för "${formData.theme}" i årskurs ${formData.grade}. Använd generella Lgr22-riktlinjer för ${subjectsArray.join(', ')}.`;
     
+    // Build prompt once at outer scope so we can log it after success
+    const prompt = generateEnhancedSwedishPrompt(formData, curriculumContext);
+
     // Generate lesson plan with retries and quality validation
-    const result = await generatePlanWithRetries(formData, curriculumContext, apiKey);
-    
+    const result = await generatePlanWithRetries(formData, curriculumContext, apiKey, prompt);
+
     console.log('✅ Lektionsplan genererad framgångsrikt');
     console.log(`Kvalitetspoäng: ${result.metadata?.qualityScore}`);
     console.log(`Curriculum-referenser: ${result.metadata?.curriculumReferences}`);
+
+    await logPrompt(formData as unknown as Record<string, unknown>, prompt, result.plan);
     
     return NextResponse.json({
       success: true,
