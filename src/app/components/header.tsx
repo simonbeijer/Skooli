@@ -64,11 +64,8 @@ const Header = ({ state }: HeaderProps) => {
               <Link href="/login" className="text-[#333] hover:text-[#3E8E7E] transition-colors font-medium">
                 Skapa Lektion
               </Link>
-              <Link href="/login" className="text-[#333] hover:text-[#3E8E7E] transition-colors font-medium">
-                Om Oss
-              </Link>
-              <Link href="/login" className="text-[#333] hover:text-[#3E8E7E] transition-colors font-medium">
-                Kontakt
+              <Link href="/demo" className="text-[#333] hover:text-[#3E8E7E] transition-colors font-medium">
+                Demo
               </Link>
             </>
           )}

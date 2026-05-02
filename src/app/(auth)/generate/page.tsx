@@ -222,16 +222,12 @@ export default function GeneratePage() {
             />
 
             <div className="text-center pt-4">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 text="Generera Lektionsplan"
                 variant="primary"
                 size="default"
-                className={`px-8 py-3 rounded-xl ${
-                  (!formData.theme || !formData.grade || !formData.subjects || !formData.duration) 
-                    ? 'opacity-60 cursor-not-allowed bg-[#3E8E7E]/30 hover:bg-[#3E8E7E]/30' 
-                    : ''
-                }`}
+                className="px-8 py-3 rounded-xl"
                 disabled={!formData.theme || !formData.grade || !formData.subjects || !formData.duration}
               />
             </div>

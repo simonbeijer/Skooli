@@ -23,7 +23,7 @@ export default function Home() {
             <div className="rounded-3xl p-8 relative overflow-hidden shadow-lg">
               <div className="relative z-10">
                 {/* Forest Scene Illustration */}
-                <Image src="/imagien.jpg" width={600} height={600} alt="Playfull image of wildlife and school equipment" className="w-full h-auto lg:scale-100"/>
+                <Image src="/hero-illustration.jpg" width={600} height={600} alt="Playfull image of wildlife and school equipment" className="w-full h-auto lg:scale-100"/>
               </div>
             </div>
           </div>
@@ -76,12 +76,14 @@ export default function Home() {
                   className="px-8 py-3 rounded-xl"
                 />
               </Link>
-              <Button 
-                text="Se Demo"
-                variant="outline"
-                size="lg"
-                className="px-8 py-3 rounded-xl"
-              />
+              <Link href="/demo">
+                <Button
+                  text="Se Demo"
+                  variant="outline"
+                  size="lg"
+                  className="px-8 py-3 rounded-xl"
+                />
+              </Link>
             </div>
           </div>
 
