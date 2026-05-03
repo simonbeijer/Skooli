@@ -75,7 +75,7 @@ const RadioGroup = forwardRef<HTMLFieldSetElement, RadioGroupProps>(({
             <label 
               key={option.value} 
               className={`flex items-start ${currentSizeClasses.spacing} cursor-pointer group ${
-                isDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md p-1'
+                isDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50 rounded-md p-1'
               }`}
             >
               <input

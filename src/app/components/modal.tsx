@@ -126,10 +126,10 @@ const Modal = ({
             {showClose && (
               <button 
                 onClick={onClose}
-                className="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary"
+                className="p-1 rounded-lg hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary"
                 aria-label="Close modal"
               >
-                <XMarkIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                <XMarkIcon className="h-5 w-5 text-gray-500" />
               </button>
             )}
           </div>

@@ -44,21 +44,6 @@
   --shape-4: #DCF0EC;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #1C1C1C;
-    --foreground: #F0F7F6;
-    --grey: #a0a0a0;
-    --primary-color: #3E8E7E;
-    --secondary-color: #88C9BF;
-    --text-primary: #F0F7F6;
-    --text-secondary: #a0a0a0;
-    --background-muted: #2a3f3c;
-    --border-color: #2a3f3c;
-    --glass-bg: rgba(0, 0, 0, 0.4);
-    --glass-border: rgba(255, 255, 255, 0.2);
-  }
-}
 body {
   color: var(--foreground);
   background: var(--background);

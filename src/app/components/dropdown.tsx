@@ -126,7 +126,7 @@ const Dropdown = ({
         )}
         {showChevron && (
           <ChevronDownIcon 
-            className={`ml-1 h-4 w-4 text-gray-600 dark:text-gray-300 transition-transform duration-200 ${
+            className={`ml-1 h-4 w-4 text-gray-600 transition-transform duration-200 ${
               isOpen ? 'rotate-180' : ''
             }`} 
           />
