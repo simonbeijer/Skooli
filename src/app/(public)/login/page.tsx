@@ -65,18 +65,18 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F0F7F6] relative overflow-x-hidden">
+    <div className="min-h-screen bg-background relative overflow-x-hidden">
       {/* Abstract Background Shapes - positioned to stay behind content on all screen sizes */}
-      <div className="absolute top-[-100px] left-[-100px] w-[400px] h-[400px] bg-[#E4F1EF] rounded-full opacity-60 sm:opacity-90 z-0"></div>
-      <div className="absolute top-[-50px] right-[-150px] w-[350px] h-[350px] bg-[#D8EDE9] rounded-full opacity-60 sm:opacity-90 z-0"></div>
-      <div className="absolute top-[200px] left-[-200px] w-[300px] h-[300px] bg-[#E8F4F1] rounded-full opacity-60 sm:opacity-90 z-0"></div>
-      <div className="absolute top-[400px] right-[-100px] w-[250px] h-[250px] bg-[#DCF0EC] rounded-full opacity-60 sm:opacity-90 z-0"></div>
+      <div className="absolute top-[-100px] left-[-100px] w-[400px] h-[400px] bg-shape-1 rounded-full opacity-60 sm:opacity-90 z-0"></div>
+      <div className="absolute top-[-50px] right-[-150px] w-[350px] h-[350px] bg-shape-2 rounded-full opacity-60 sm:opacity-90 z-0"></div>
+      <div className="absolute top-[200px] left-[-200px] w-[300px] h-[300px] bg-shape-3 rounded-full opacity-60 sm:opacity-90 z-0"></div>
+      <div className="absolute top-[400px] right-[-100px] w-[250px] h-[250px] bg-shape-4 rounded-full opacity-60 sm:opacity-90 z-0"></div>
 
       {/* Navigation */}
       <Header state="login" />
 
       <main className="relative z-20 max-w-md mx-auto px-6 py-16">
-        <div className="bg-[#3E8E7E]/90 backdrop-blur-sm rounded-3xl p-8 border border-[#3E8E7E]/50 shadow-lg relative z-20">
+        <div className="bg-primary/90 backdrop-blur-sm rounded-3xl p-8 border border-primary/50 shadow-lg relative z-20">
           {/* Logo Section */}
           <div className="text-center mb-8">
             {/* Forest logo from public folder */}
@@ -125,7 +125,7 @@ export default function Login() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Ange din e-postadress"
                     required
-                    className={`flex h-10 w-full rounded-md border bg-white px-3 py-2 text-base text-[#1C1C1C] ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm transition-all duration-200 ${
+                    className={`flex h-10 w-full rounded-md border bg-white px-3 py-2 text-base text-foreground ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm transition-all duration-200 ${
                       error 
                         ? "border-red-300 focus-visible:ring-red-300" 
                         : "border-gray-300 focus:border-white"
@@ -147,7 +147,7 @@ export default function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Ange ditt lösenord"
                     required
-                    className={`flex h-10 w-full rounded-md border bg-white px-3 py-2 text-base text-[#1C1C1C] ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm transition-all duration-200 ${
+                    className={`flex h-10 w-full rounded-md border bg-white px-3 py-2 text-base text-foreground ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm transition-all duration-200 ${
                       error 
                         ? "border-red-300 focus-visible:ring-red-300" 
                         : "border-gray-300 focus:border-white"
@@ -168,7 +168,7 @@ export default function Login() {
                   type="submit"
                   variant="outline"
                   size="lg"
-                  className="w-full bg-white text-[#3E8E7E] hover:bg-white hover:text-[#2d6b5e] border-white font-semibold"
+                  className="w-full bg-white text-primary hover:bg-white hover:text-primary-dark border-white font-semibold"
                 />
               </>
             )}

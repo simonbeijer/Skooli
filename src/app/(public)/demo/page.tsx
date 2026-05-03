@@ -123,61 +123,61 @@ export default function DemoPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F0F7F6] relative overflow-x-hidden">
-      <div className="absolute top-[-100px] left-[-100px] w-[400px] h-[400px] bg-[#E4F1EF] rounded-full z-0 opacity-90"></div>
-      <div className="absolute top-[-50px] right-[-150px] w-[350px] h-[350px] bg-[#D8EDE9] rounded-full z-0 opacity-90"></div>
-      <div className="absolute top-[400px] left-[-200px] w-[300px] h-[300px] bg-[#E8F4F1] rounded-full z-0 opacity-90"></div>
-      <div className="absolute top-[700px] right-[-100px] w-[250px] h-[250px] bg-[#DCF0EC] rounded-full z-0 opacity-90"></div>
+    <div className="min-h-screen bg-background relative overflow-x-hidden">
+      <div className="absolute top-[-100px] left-[-100px] w-[400px] h-[400px] bg-shape-1 rounded-full z-0 opacity-90"></div>
+      <div className="absolute top-[-50px] right-[-150px] w-[350px] h-[350px] bg-shape-2 rounded-full z-0 opacity-90"></div>
+      <div className="absolute top-[400px] left-[-200px] w-[300px] h-[300px] bg-shape-3 rounded-full z-0 opacity-90"></div>
+      <div className="absolute top-[700px] right-[-100px] w-[250px] h-[250px] bg-shape-4 rounded-full z-0 opacity-90"></div>
 
       <Header state="public" />
 
       <main className="max-w-5xl mx-auto px-6 py-8 relative z-10">
         {/* Demo banner */}
-        <div className="bg-[#3E8E7E]/10 border border-[#3E8E7E]/30 rounded-2xl px-5 py-3 mb-8 flex items-center space-x-3">
-          <div className="w-8 h-8 bg-[#3E8E7E] rounded-full flex items-center justify-center flex-shrink-0">
+        <div className="bg-primary/10 border border-primary/30 rounded-2xl px-5 py-3 mb-8 flex items-center space-x-3">
+          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
             <svg className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <p className="text-[#1C1C1C] text-sm">
-            Detta är en exempel-lektionsplan. <Link href="/login" className="font-semibold text-[#3E8E7E] hover:underline">Logga in</Link> för att skapa din egen.
+          <p className="text-foreground text-sm">
+            Detta är en exempel-lektionsplan. <Link href="/login" className="font-semibold text-primary hover:underline">Logga in</Link> för att skapa din egen.
           </p>
         </div>
 
         {/* Header card with metadata */}
         <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-white/50 shadow-lg mb-8">
           <div className="flex items-start space-x-4 mb-6">
-            <div className="w-12 h-12 bg-[#3E8E7E] rounded-2xl flex items-center justify-center flex-shrink-0">
+            <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center flex-shrink-0">
               <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
             <div>
-              <h1 className="text-3xl font-playfair font-bold text-[#1C1C1C]">
+              <h1 className="text-3xl font-playfair font-bold text-foreground">
                 Exempel: {demoPlan.theme}
               </h1>
-              <p className="text-[#333] mt-1">
+              <p className="text-grey mt-1">
                 Så här ser en färdig lektionsplan ut – genererad på 30 sekunder.
               </p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-[#F0F7F6] rounded-xl p-4">
-              <p className="text-xs uppercase tracking-wide text-[#333]/70 font-medium">Tema</p>
-              <p className="text-[#1C1C1C] font-semibold mt-1">{demoPlan.theme}</p>
+            <div className="bg-background rounded-xl p-4">
+              <p className="text-xs uppercase tracking-wide text-grey/70 font-medium">Tema</p>
+              <p className="text-foreground font-semibold mt-1">{demoPlan.theme}</p>
             </div>
-            <div className="bg-[#F0F7F6] rounded-xl p-4">
-              <p className="text-xs uppercase tracking-wide text-[#333]/70 font-medium">Årskurs</p>
-              <p className="text-[#1C1C1C] font-semibold mt-1">{demoPlan.grade}</p>
+            <div className="bg-background rounded-xl p-4">
+              <p className="text-xs uppercase tracking-wide text-grey/70 font-medium">Årskurs</p>
+              <p className="text-foreground font-semibold mt-1">{demoPlan.grade}</p>
             </div>
-            <div className="bg-[#F0F7F6] rounded-xl p-4">
-              <p className="text-xs uppercase tracking-wide text-[#333]/70 font-medium">Ämnen</p>
-              <p className="text-[#1C1C1C] font-semibold mt-1">{demoPlan.subjects}</p>
+            <div className="bg-background rounded-xl p-4">
+              <p className="text-xs uppercase tracking-wide text-grey/70 font-medium">Ämnen</p>
+              <p className="text-foreground font-semibold mt-1">{demoPlan.subjects}</p>
             </div>
-            <div className="bg-[#F0F7F6] rounded-xl p-4">
-              <p className="text-xs uppercase tracking-wide text-[#333]/70 font-medium">Längd</p>
-              <p className="text-[#1C1C1C] font-semibold mt-1">{demoPlan.duration}</p>
+            <div className="bg-background rounded-xl p-4">
+              <p className="text-xs uppercase tracking-wide text-grey/70 font-medium">Längd</p>
+              <p className="text-foreground font-semibold mt-1">{demoPlan.duration}</p>
             </div>
           </div>
         </div>
@@ -205,23 +205,23 @@ export default function DemoPage() {
           <ReactMarkdown
             components={{
               h1: ({ children }) => (
-                <h1 className="text-3xl font-playfair font-bold text-[#1C1C1C] mb-4 first:mt-0">{children}</h1>
+                <h1 className="text-3xl font-playfair font-bold text-foreground mb-4 first:mt-0">{children}</h1>
               ),
               h2: ({ children }) => (
-                <h2 className="text-2xl font-playfair font-bold text-[#1C1C1C] mt-10 mb-4 pb-2 border-b border-[#E6F2F1]">{children}</h2>
+                <h2 className="text-2xl font-playfair font-bold text-foreground mt-10 mb-4 pb-2 border-b border-muted">{children}</h2>
               ),
               h3: ({ children }) => (
-                <h3 className="text-lg font-semibold text-[#3E8E7E] mt-6 mb-2">{children}</h3>
+                <h3 className="text-lg font-semibold text-primary mt-6 mb-2">{children}</h3>
               ),
               p: ({ children }) => (
-                <p className="text-[#1C1C1C] mb-4 leading-relaxed">{children}</p>
+                <p className="text-foreground mb-4 leading-relaxed">{children}</p>
               ),
               ul: ({ children }) => <ul className="mb-6 space-y-2 pl-6 list-disc">{children}</ul>,
               ol: ({ children }) => <ol className="mb-6 space-y-2 pl-6 list-decimal">{children}</ol>,
-              li: ({ children }) => <li className="text-[#1C1C1C]">{children}</li>,
-              strong: ({ children }) => <strong className="font-semibold text-[#1C1C1C]">{children}</strong>,
-              em: ({ children }) => <em className="italic text-[#3E8E7E]">{children}</em>,
-              hr: () => <hr className="my-8 border-[#E6F2F1]" />,
+              li: ({ children }) => <li className="text-foreground">{children}</li>,
+              strong: ({ children }) => <strong className="font-semibold text-foreground">{children}</strong>,
+              em: ({ children }) => <em className="italic text-primary">{children}</em>,
+              hr: () => <hr className="my-8 border-muted" />,
             }}
           >
             {demoPlan.markdown}
@@ -229,7 +229,7 @@ export default function DemoPage() {
         </div>
 
         {/* CTA */}
-        <div className="bg-gradient-to-br from-[#3E8E7E] to-[#88C9BF] rounded-3xl p-10 text-center shadow-lg">
+        <div className="bg-gradient-to-br from-primary to-secondary rounded-3xl p-10 text-center shadow-lg">
           <h2 className="text-3xl font-playfair font-bold text-white mb-3">
             Redo att skapa din egen?
           </h2>
@@ -239,7 +239,7 @@ export default function DemoPage() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/login"
-              className="inline-flex items-center justify-center px-8 py-3 rounded-xl bg-white text-[#3E8E7E] font-medium shadow-lg hover:bg-white/90 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-3 rounded-xl bg-white text-primary font-medium shadow-lg hover:bg-white/90 transition-colors"
             >
               Skapa Min Första Lektion
             </Link>

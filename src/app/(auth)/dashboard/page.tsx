@@ -29,21 +29,21 @@ export default function Dashboard() {
         {/* Welcome Header with inline user identity */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-10">
           <div>
-            <h1 className="text-4xl sm:text-5xl font-playfair font-bold text-[#1C1C1C] mb-2 leading-tight">
-              Välkommen tillbaka, <span className="text-[#3E8E7E]">{displayName.split(' ')[0]}</span>!
+            <h1 className="text-4xl sm:text-5xl font-playfair font-bold text-foreground mb-2 leading-tight">
+              Välkommen tillbaka, <span className="text-primary">{displayName.split(' ')[0]}</span>!
             </h1>
-            <p className="text-lg text-[#333] leading-relaxed font-inter">
+            <p className="text-lg text-grey leading-relaxed font-inter">
               Redo att skapa din nästa lektion?
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-14 h-14 bg-gradient-to-br from-[#3E8E7E] to-[#88C9BF] rounded-2xl flex items-center justify-center text-white font-semibold text-lg shadow-lg shrink-0">
+            <div className="w-14 h-14 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center text-white font-semibold text-lg shadow-lg shrink-0">
               {initials}
             </div>
             <div className="flex flex-col">
-              <span className="font-semibold text-[#1C1C1C] font-inter leading-tight">{displayName}</span>
-              <span className="inline-flex items-center gap-1.5 text-xs text-[#3E8E7E] font-medium font-inter mt-0.5">
-                <span className="w-1.5 h-1.5 bg-[#3E8E7E] rounded-full"></span>
+              <span className="font-semibold text-foreground font-inter leading-tight">{displayName}</span>
+              <span className="inline-flex items-center gap-1.5 text-xs text-primary font-medium font-inter mt-0.5">
+                <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
                 Aktiv
               </span>
             </div>
@@ -53,12 +53,12 @@ export default function Dashboard() {
         {/* PRIMARY CTA: Skapa Ny Lektion - hero card */}
         <a
           href="/generate"
-          className="group block relative overflow-hidden rounded-3xl p-8 sm:p-10 mb-8 bg-gradient-to-br from-[#3E8E7E] via-[#3E8E7E] to-[#88C9BF] shadow-xl hover:shadow-2xl transition-all duration-200 border border-white/20"
+          className="group block relative overflow-hidden rounded-3xl p-8 sm:p-10 mb-8 bg-gradient-to-br from-primary via-primary to-secondary shadow-xl hover:shadow-2xl transition-all duration-200 border border-white/20"
           aria-label="Skapa ny lektion"
         >
           {/* Decorative shapes */}
           <div className="absolute -top-16 -right-16 w-56 h-56 bg-white/10 rounded-full pointer-events-none"></div>
-          <div className="absolute -bottom-20 -left-10 w-48 h-48 bg-[#A4D4AE]/20 rounded-full pointer-events-none"></div>
+          <div className="absolute -bottom-20 -left-10 w-48 h-48 bg-accent/20 rounded-full pointer-events-none"></div>
 
           <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-8">
             <div className="flex-1 max-w-xl">
@@ -74,7 +74,7 @@ export default function Dashboard() {
               <p className="text-lg text-white/90 font-inter mb-6 leading-relaxed">
                 Generera en komplett lektionsplan med AI på 30 sekunder — anpassad efter Läroplanen.
               </p>
-              <div className="inline-flex items-center gap-2 bg-white text-[#3E8E7E] font-semibold font-inter px-6 py-3 rounded-xl shadow-md group-hover:shadow-lg group-hover:gap-3 transition-all duration-200">
+              <div className="inline-flex items-center gap-2 bg-white text-primary font-semibold font-inter px-6 py-3 rounded-xl shadow-md group-hover:shadow-lg group-hover:gap-3 transition-all duration-200">
                 <span>Starta nu</span>
                 <svg className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -93,41 +93,41 @@ export default function Dashboard() {
 
         {/* SECONDARY: Compact user info strip */}
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-white/50 shadow-sm mb-8">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:divide-x sm:divide-[#E6F2F1]">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:divide-x sm:divide-muted">
             <div className="flex items-center gap-3 sm:pr-4">
-              <div className="w-9 h-9 bg-[#3E8E7E]/10 rounded-full flex items-center justify-center shrink-0">
-                <svg className="w-4 h-4 text-[#3E8E7E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-9 h-9 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
               <div className="min-w-0">
-                <p className="text-xs text-[#333]/70 font-inter uppercase tracking-wide">E-post</p>
-                <p className="text-sm text-[#1C1C1C] font-inter font-medium truncate">{user?.email || 'john.doe@example.com'}</p>
+                <p className="text-xs text-grey/70 font-inter uppercase tracking-wide">E-post</p>
+                <p className="text-sm text-foreground font-inter font-medium truncate">{user?.email || 'john.doe@example.com'}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3 sm:px-4">
-              <div className="w-9 h-9 bg-[#3E8E7E]/10 rounded-full flex items-center justify-center shrink-0">
-                <svg className="w-4 h-4 text-[#3E8E7E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-9 h-9 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
               <div className="min-w-0">
-                <p className="text-xs text-[#333]/70 font-inter uppercase tracking-wide">Plats</p>
-                <p className="text-sm text-[#1C1C1C] font-inter font-medium truncate">Göteborg, Sverige</p>
+                <p className="text-xs text-grey/70 font-inter uppercase tracking-wide">Plats</p>
+                <p className="text-sm text-foreground font-inter font-medium truncate">Göteborg, Sverige</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3 sm:pl-4">
-              <div className="w-9 h-9 bg-[#3E8E7E]/10 rounded-full flex items-center justify-center shrink-0">
-                <svg className="w-4 h-4 text-[#3E8E7E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-9 h-9 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               </div>
               <div className="min-w-0">
-                <p className="text-xs text-[#333]/70 font-inter uppercase tracking-wide">Medlem sedan</p>
-                <p className="text-sm text-[#1C1C1C] font-inter font-medium truncate">Januari 2024</p>
+                <p className="text-xs text-grey/70 font-inter uppercase tracking-wide">Medlem sedan</p>
+                <p className="text-sm text-foreground font-inter font-medium truncate">Januari 2024</p>
               </div>
             </div>
           </div>
@@ -135,30 +135,30 @@ export default function Dashboard() {
 
         {/* TERTIARY: Mina Lektioner — coming soon teaser */}
         <div
-          className="relative bg-white/50 backdrop-blur-sm rounded-3xl p-8 border border-dashed border-[#88C9BF]/40 overflow-hidden"
+          className="relative bg-white/50 backdrop-blur-sm rounded-3xl p-8 border border-dashed border-secondary/40 overflow-hidden"
           aria-label="Mina Lektioner — kommer snart"
         >
           <div className="flex flex-col sm:flex-row sm:items-center gap-6">
             {/* Empty-state illustration */}
             <div className="relative w-20 h-20 shrink-0 flex items-center justify-center">
-              <div className="absolute inset-0 bg-[#A4D4AE]/20 rounded-2xl"></div>
-              <div className="absolute inset-2 bg-[#88C9BF]/20 rounded-xl"></div>
-              <svg className="relative w-10 h-10 text-[#3E8E7E]/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="absolute inset-0 bg-accent/20 rounded-2xl"></div>
+              <div className="absolute inset-2 bg-secondary/20 rounded-xl"></div>
+              <svg className="relative w-10 h-10 text-primary/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
 
             <div className="flex-1">
               <div className="flex flex-wrap items-center gap-3 mb-2">
-                <h3 className="text-xl font-playfair font-bold text-[#1C1C1C]/70">Mina Lektioner</h3>
-                <span className="inline-flex items-center gap-1.5 bg-[#A4D4AE]/30 text-[#3E8E7E] text-xs font-semibold px-3 py-1 rounded-full font-inter border border-[#A4D4AE]/40">
+                <h3 className="text-xl font-playfair font-bold text-foreground/70">Mina Lektioner</h3>
+                <span className="inline-flex items-center gap-1.5 bg-accent/30 text-primary text-xs font-semibold px-3 py-1 rounded-full font-inter border border-accent/40">
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   Kommer snart
                 </span>
               </div>
-              <p className="text-[#333]/70 font-inter">
+              <p className="text-grey/70 font-inter">
                 Här kommer du snart kunna visa och hantera dina sparade lektionsplaner.
               </p>
             </div>
