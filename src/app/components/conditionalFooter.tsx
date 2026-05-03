@@ -23,8 +23,8 @@ const ConditionalFooter = ({
   }
 
   return (
-    <footer className={`flex justify-center items-center h-12 bg-[#F0F7F6] mt-auto ${className}`.trim()}>
-      <p className="text-sm font-inter text-[#333]/60">
+    <footer className={`flex justify-center items-center h-12 bg-background mt-auto ${className}`.trim()}>
+      <p className="text-sm font-inter text-grey/60">
         © {year} {companyName}
       </p>
     </footer>

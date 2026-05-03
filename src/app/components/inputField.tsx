@@ -35,8 +35,8 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(({
   const errorId = useId();
   const helperId = useId();
 
-  const baseInputClasses = 'w-full px-3 py-2 border rounded-md bg-white text-[#1C1C1C] placeholder:text-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#3E8E7E] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed md:text-sm';
-  const errorClasses = error ? 'border-red-500 focus:ring-red-500' : 'border-[#E6F2F1] focus:border-[#3E8E7E]';
+  const baseInputClasses = 'w-full px-3 py-2 border rounded-md bg-white text-foreground placeholder:text-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed md:text-sm';
+  const errorClasses = error ? 'border-red-500 focus:ring-red-500' : 'border-muted focus:border-primary';
   const iconPadding = startIcon ? 'pl-10' : endIcon ? 'pr-10' : '';
 
   const inputClasses = `${baseInputClasses} ${errorClasses} ${iconPadding} ${className}`.trim();
@@ -46,7 +46,7 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(({
       {label && (
         <label 
           htmlFor={inputId} 
-          className="block text-sm font-medium text-[#1C1C1C]"
+          className="block text-sm font-medium text-foreground"
         >
           {label}
           {required && <span className="text-red-500 ml-1" aria-label="required">*</span>}

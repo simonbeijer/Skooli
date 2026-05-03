@@ -33,10 +33,10 @@ const CheckboxField = ({ id, checked, onChange, children, required }: CheckboxFi
       type="checkbox"
       checked={checked}
       onChange={(e) => onChange(e.target.checked)}
-      className="mt-1 w-4 h-4 text-[#3E8E7E] bg-white border-[#E6F2F1] rounded focus:ring-[#3E8E7E] focus:ring-2 transition-colors"
+      className="mt-1 w-4 h-4 text-primary bg-white border-muted rounded focus:ring-primary focus:ring-2 transition-colors"
       required={required}
     />
-    <span className="text-sm font-inter text-[#1C1C1C] group-hover:text-[#333] transition-colors">
+    <span className="text-sm font-inter text-foreground group-hover:text-grey transition-colors">
       {children}
     </span>
   </label>
@@ -51,8 +51,8 @@ interface NoticeCardProps {
 
 const NoticeCard = ({ icon, title, children, variant = 'info' }: NoticeCardProps) => {
   const variantClasses = {
-    warning: 'bg-[#88C9BF]/10 border-[#88C9BF]/30',
-    info: 'bg-[#A4D4AE]/10 border-[#A4D4AE]/30'
+    warning: 'bg-secondary/10 border-secondary/30',
+    info: 'bg-accent/10 border-accent/30'
   };
 
   return (
@@ -62,8 +62,8 @@ const NoticeCard = ({ icon, title, children, variant = 'info' }: NoticeCardProps
           {icon}
         </div>
         <div className="text-sm text-left pt-1 font-inter">
-          <p className="font-semibold text-[#1C1C1C] mb-2">{title}</p>
-          <div className="text-[#333] leading-relaxed">
+          <p className="font-semibold text-foreground mb-2">{title}</p>
+          <div className="text-grey leading-relaxed">
             {children}
           </div>
         </div>
@@ -121,7 +121,7 @@ const TermsModal = ({
         {/* Disclaimer Section */}
         <NoticeCard
           variant="warning"
-          icon={<ExclamationTriangleIcon className="h-5 w-5 text-[#3E8E7E]" />}
+          icon={<ExclamationTriangleIcon className="h-5 w-5 text-primary" />}
           title="Viktig Information"
         >
           {customTermsContent || (
@@ -136,7 +136,7 @@ const TermsModal = ({
         {/* Privacy Notice Section */}
         <NoticeCard
           variant="info"
-          icon={<InformationCircleIcon className="h-5 w-5 text-[#3E8E7E]" />}
+          icon={<InformationCircleIcon className="h-5 w-5 text-primary" />}
           title="Databehandlingsmeddelande"
         >
           {customPrivacyContent || (
@@ -149,7 +149,7 @@ const TermsModal = ({
         </NoticeCard>
 
         {/* Consent Checkboxes */}
-        <div className="space-y-4 mb-6 p-6 bg-[#F0F7F6] rounded-3xl border border-[#E6F2F1]">
+        <div className="space-y-4 mb-6 p-6 bg-background rounded-3xl border border-muted">
           <CheckboxField
             id="terms-checkbox"
             checked={termsAccepted}

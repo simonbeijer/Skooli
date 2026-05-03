@@ -28,10 +28,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
   
   const variantClasses = {
-    primary: 'bg-[#3E8E7E] hover:bg-[#2d6b5e] disabled:hover:bg-[#3E8E7E] text-white focus:ring-[#3E8E7E]',
-    secondary: 'bg-[#88C9BF] hover:bg-[#6bb3a8] text-white focus:ring-[#88C9BF]',
-    outline: 'border border-[#3E8E7E] bg-transparent hover:bg-[#3E8E7E] text-[#3E8E7E] hover:text-white focus:ring-[#3E8E7E]',
-    ghost: 'bg-transparent hover:bg-[#3E8E7E]/10 text-[#3E8E7E] focus:ring-[#3E8E7E]',
+    primary: 'bg-primary hover:bg-primary-dark disabled:hover:bg-primary text-white focus:ring-primary',
+    secondary: 'bg-secondary hover:bg-primary-light text-white focus:ring-secondary',
+    outline: 'border border-primary bg-transparent hover:bg-primary text-primary hover:text-white focus:ring-primary',
+    ghost: 'bg-transparent hover:bg-primary/10 text-primary focus:ring-primary',
     danger: 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500'
   };
   

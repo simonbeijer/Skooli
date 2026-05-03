@@ -119,7 +119,7 @@ const Modal = ({
         {(title || showClose) && (
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
             {title && (
-              <h2 id="modal-title" className="text-lg font-semibold text-[#1C1C1C]">
+              <h2 id="modal-title" className="text-lg font-semibold text-foreground">
                 {title}
               </h2>
             )}

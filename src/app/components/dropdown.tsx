@@ -97,18 +97,18 @@ const Dropdown = ({
   ];
 
   const getActionClasses = (variant: DropdownAction['variant'] = 'default') => {
-    const baseClasses = 'w-full text-left px-3 py-2 text-sm rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#3E8E7E] font-inter';
+    const baseClasses = 'w-full text-left px-3 py-2 text-sm rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary font-inter';
     
     return variant === 'danger' 
       ? `${baseClasses} text-red-600 hover:bg-red-50 hover:text-red-800`
-      : `${baseClasses} text-[#333] hover:bg-[#3E8E7E]/10 hover:text-[#3E8E7E]`;
+      : `${baseClasses} text-grey hover:bg-primary/10 hover:text-primary`;
   };
 
   return (
     <div className={`relative ${className}`.trim()} ref={dropdownRef}>
       <button 
         ref={buttonRef}
-        className="flex items-center p-2 rounded-full hover:bg-[#3E8E7E]/10 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#3E8E7E] focus:ring-offset-2"
+        className="flex items-center p-2 rounded-full hover:bg-primary/10 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
         onClick={toggleDropdown}
         onKeyDown={handleKeyDown}
         aria-expanded={isOpen}
@@ -122,7 +122,7 @@ const Dropdown = ({
             className="h-8 w-8 rounded-full object-cover"
           />
         ) : (
-          <UserCircleIcon className="h-8 w-8 text-[#3E8E7E]" />
+          <UserCircleIcon className="h-8 w-8 text-primary" />
         )}
         {showChevron && (
           <ChevronDownIcon 
@@ -145,12 +145,12 @@ const Dropdown = ({
         {user ? (
           <>
             {/* User Info */}
-            <div className="mb-3 pb-3 border-b border-[#E6F2F1]">
-              <p className="text-sm font-medium font-inter text-[#1C1C1C] truncate">
+            <div className="mb-3 pb-3 border-b border-muted">
+              <p className="text-sm font-medium font-inter text-foreground truncate">
                 {user.name}
               </p>
               {user.email && (
-                <p className="text-xs font-inter text-[#333] truncate">
+                <p className="text-xs font-inter text-grey truncate">
                   {user.email}
                 </p>
               )}

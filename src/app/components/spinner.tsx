@@ -18,7 +18,7 @@ const Spinner: React.FC<SpinnerProps> = ({
   };
   
   const colors = {
-    primary: "border-gray-200 border-t-[#3E8E7E]",
+    primary: "border-gray-200 border-t-primary",
     white: "border-white/20 border-t-white"
   };
   

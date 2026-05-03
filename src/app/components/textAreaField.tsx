@@ -37,8 +37,8 @@ const TextAreaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>(({
   const errorId = useId();
   const helperId = useId();
   
-  const baseTextareaClasses = 'w-full px-3 py-2 border rounded-md bg-white text-[#1C1C1C] placeholder:text-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#3E8E7E] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed md:text-sm min-h-[80px]';
-  const errorClasses = error ? 'border-red-500 focus:ring-red-500' : 'border-[#E6F2F1] focus:border-[#3E8E7E]';
+  const baseTextareaClasses = 'w-full px-3 py-2 border rounded-md bg-white text-foreground placeholder:text-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed md:text-sm min-h-[80px]';
+  const errorClasses = error ? 'border-red-500 focus:ring-red-500' : 'border-muted focus:border-primary';
   const resizeClasses = {
     none: 'resize-none',
     vertical: 'resize-y',
@@ -57,7 +57,7 @@ const TextAreaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>(({
       {label && (
         <label 
           htmlFor={textareaId} 
-          className="block text-sm font-medium text-[#1C1C1C]"
+          className="block text-sm font-medium text-foreground"
         >
           {label}
           {required && <span className="text-red-500 ml-1" aria-label="required">*</span>}
