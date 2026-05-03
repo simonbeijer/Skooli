@@ -15,7 +15,7 @@ export default function GeneratePage() {
     theme: '',
     grade: '',
     subjects: '',
-    duration: '',
+    lessonCount: 0,
     notes: ''
   });
   const [isGenerating, setIsGenerating] = useState(false);
@@ -31,12 +31,10 @@ export default function GeneratePage() {
     { value: "6", label: "Årskurs 6" }
   ];
 
-  const durationOptions = [
-    { value: "1-vecka", label: "1 vecka" },
-    { value: "2-veckor", label: "2 veckor" },
-    { value: "3-veckor", label: "3 veckor" },
-    { value: "1-manad", label: "1 månad" }
-  ];
+  const lessonCountOptions = [1, 2, 3, 4, 5, 6, 7, 8].map((n) => ({
+    value: String(n),
+    label: n === 1 ? "1 lektion" : `${n} lektioner`,
+  }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,7 +55,7 @@ export default function GeneratePage() {
           theme: formData.theme,
           grade: formData.grade,
           subjects: formData.subjects,
-          duration: formData.duration,
+          lessonCount: formData.lessonCount,
           notes: formData.notes || undefined
         })
       });
@@ -123,14 +121,19 @@ export default function GeneratePage() {
     if (apiError) setApiError('');
   };
 
+  const handleLessonCountChange = (value: string) => {
+    setFormData(prev => ({ ...prev, lessonCount: Number(value) }));
+    if (apiError) setApiError('');
+  };
+
   if (isGenerating) {
     return (
       <div className="flex items-center justify-center min-h-[80vh] relative z-10">
         <div className="text-center space-y-6">
           <Spinner size="lg" />
           <div className="space-y-2">
-            <h2 className="text-2xl font-playfair font-bold text-[#1C1C1C]">Skapar Din Lektionsplan...</h2>
-            <p className="text-[#333]">AI:n analyserar Läroplanen och skapar din plan</p>
+            <h2 className="text-2xl font-playfair font-bold text-foreground">Skapar Din Lektionsplan...</h2>
+            <p className="text-grey">AI:n analyserar Läroplanen och skapar din plan</p>
           </div>
         </div>
       </div>
@@ -142,7 +145,7 @@ export default function GeneratePage() {
       {/* Back Navigation - moved to right */}
       <div className="relative z-10 mt-8 mb-2">
         <div className="max-w-4xl mx-auto px-6 py-4 flex justify-end">
-          <Link href="/dashboard" className="flex items-center space-x-2 text-[#333] hover:text-[#3E8E7E] transition-colors">
+          <Link href="/dashboard" className="flex items-center space-x-2 text-grey hover:text-primary transition-colors">
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
@@ -152,12 +155,12 @@ export default function GeneratePage() {
       </div>
 
       <main className="max-w-4xl mx-auto px-6 py-8 relative z-10">
-        <div className="bg-white rounded-3xl p-8 border border-[#E6F2F1]">
+        <div className="bg-white rounded-3xl p-8 border border-muted">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-playfair font-bold text-[#1C1C1C] mb-4">
+            <h1 className="text-3xl font-playfair font-bold text-foreground mb-4">
               Skapa Din Lektionsplan
             </h1>
-            <p className="text-[#333]">
+            <p className="text-grey">
               Fyll i formuläret nedan så skapar vår AI en komplett lektionsplan enligt Läroplanen
             </p>
           </div>
@@ -202,20 +205,23 @@ export default function GeneratePage() {
                 required
               />
 
-              <FormSelect
-                label="Längd"
-                value={formData.duration}
-                onValueChange={(value) => handleInputChange('duration', value)}
-                options={durationOptions}
-                placeholder="Välj längd"
-                required
-              />
+              <div>
+                <FormSelect
+                  label="Antal lektioner"
+                  value={formData.lessonCount ? String(formData.lessonCount) : ''}
+                  onValueChange={handleLessonCountChange}
+                  options={lessonCountOptions}
+                  placeholder="Välj antal lektioner"
+                  required
+                />
+                <p className="text-sm text-grey mt-2">en lektion = 1 timme</p>
+              </div>
             </div>
 
             <TextAreaField
               name="notes"
               label="Ytterligare Önskemål (valfritt)"
-              placeholder="Beskriv eventuella specifika önskemål eller fokusområden..."
+              placeholder="Prata om svenska djur och lägg till en introduktion för första lektionen"
               value={formData.notes}
               onChange={(value) => handleInputChange('notes', value)}
               rows={4}
@@ -228,7 +234,7 @@ export default function GeneratePage() {
                 variant="primary"
                 size="default"
                 className="px-8 py-3 rounded-xl"
-                disabled={!formData.theme || !formData.grade || !formData.subjects || !formData.duration}
+                disabled={!formData.theme || !formData.grade || !formData.subjects || !formData.lessonCount}
               />
             </div>
           </form>

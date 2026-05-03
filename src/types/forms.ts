@@ -15,7 +15,7 @@ export interface FormData {
   theme: string;
   grade: string;
   subjects: string;
-  duration: string;
+  lessonCount: number;
   notes?: string;
 }
 

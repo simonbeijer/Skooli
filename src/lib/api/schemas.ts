@@ -128,14 +128,14 @@ export const GeneratePlanSchema = z.object({
     .min(1, "Subjects cannot be empty")
     .max(200, "Subjects must be less than 200 characters"),
   
-  duration: z
-    .string({
-      required_error: "Duration is required",
-      invalid_type_error: "Duration must be a string"
+  lessonCount: z
+    .number({
+      required_error: "Antal lektioner krävs",
+      invalid_type_error: "Antal lektioner måste vara ett tal"
     })
-    .trim()
-    .min(1, "Duration cannot be empty")
-    .max(100, "Duration must be less than 100 characters"),
+    .int("Antal lektioner måste vara ett heltal")
+    .min(1, "Antal lektioner måste vara minst 1")
+    .max(8, "Antal lektioner får vara högst 8"),
   
   notes: z
     .string()

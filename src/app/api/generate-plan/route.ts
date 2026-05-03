@@ -20,7 +20,7 @@ interface GeminiAPIRequest {
   theme: string;
   grade: string;
   subjects: string; // Comma-separated string from form
-  duration: string;
+  lessonCount: number;
   notes?: string;
 }
 
@@ -91,8 +91,13 @@ function validateFormData(data: any): GeminiAPIRequest {
     errors.push("Minst ett ämne måste väljas");
   }
   
-  if (!data.duration || typeof data.duration !== 'string' || data.duration.trim().length === 0) {
-    errors.push("Lektionslängd måste anges");
+  if (
+    typeof data.lessonCount !== 'number' ||
+    !Number.isInteger(data.lessonCount) ||
+    data.lessonCount < 1 ||
+    data.lessonCount > 8
+  ) {
+    errors.push("Antal lektioner måste vara mellan 1 och 8");
   }
 
   if (errors.length > 0) {
@@ -103,7 +108,7 @@ function validateFormData(data: any): GeminiAPIRequest {
     theme: data.theme.trim(),
     grade: data.grade.trim(),
     subjects: data.subjects.trim(),
-    duration: data.duration.trim(),
+    lessonCount: data.lessonCount,
     notes: data.notes?.trim() || undefined
   };
 }
@@ -175,13 +180,15 @@ function generateEnhancedSwedishPrompt(
   const subjectsArray = formData.subjects.split(',').map(s => s.trim()).filter(Boolean);
   const subjectList = subjectsArray.join(", ");
 
+  const lessonWord = formData.lessonCount === 1 ? "lektion" : "lektioner";
+
   return `Du är en erfaren svensk lärare som skriver övergripande lektionsförslag enligt Lgr22.
 
 **UPPDRAG:**
-Skriv ett övergripande förslag på lektionsplan för temat "${formData.theme}", årskurs ${formData.grade}, ämnen ${subjectList}. Period: ${formData.duration}.
+Skriv ett övergripande förslag på lektionsplan för temat "${formData.theme}", årskurs ${formData.grade}, ämnen ${subjectList}. Antal lektioner: ${formData.lessonCount}. Varje lektion är ca 60 minuter.
 
 **OMFATTNING:**
-Det här är ett förslag som läraren ska kunna anpassa — inte ett minutpreciserat schema. Använd uppskattade tidsangivelser (t.ex. "ca 30 min") snarare än exakta klockslag. Skala längden efter period: kortare period = kortare plan. Sikta på det som verkligen är användbart, undvik utfyllnad och upprepningar.
+Det här är ett förslag som läraren ska kunna anpassa — inte ett minutpreciserat schema. Producera exakt ${formData.lessonCount} ${lessonWord} i Arbetsgång-sektionen, numrerade Lektion 1, Lektion 2, ... Lektion ${formData.lessonCount}. Varje lektion ska beskrivas som ett ~60-minutspass utan klockslag, utan minutscheman och utan veckodagar. Övriga sektioner (Material, Aktiviteter, Anpassningar, Bedömning) beskriver arbetsområdet som helhet.
 
 **FORMAT:**
 Börja svaret direkt med första rubriken (# 📚 Lektionsplan: ...). Skriv ingen inledande mening eller sammanfattning innan rubriken. Använd inga horisontella linjer (---) någonstans i texten.
@@ -201,22 +208,27 @@ ${curriculumContext}
 ## 🎯 Syfte och mål
 - **Koppling till Lgr22 centralt innehåll:** ange relevant centralt innehåll
 - **Förmågor som utvecklas:** kort lista
-- **Lärandemål:** vad eleverna ska kunna efter perioden
+- **Lärandemål:** vad eleverna ska kunna efter arbetsområdet
 
-## ⏰ Översikt (${formData.duration})
-Övergripande upplägg över perioden med uppskattad tidsåtgång per moment. Inga minutscheman.
+## ⏰ Arbetsgång (${formData.lessonCount} ${lessonWord})
+Lista varje lektion i ordning. För varje lektion: en kort rubrik som beskriver fokus, sedan 2–4 meningar om aktivitet, syfte och elevernas roll. Inga klockslag, inga veckodagar.
 
-## 🎭 Aktiviteter och arbetssätt
-Förslag på varierade arbetsformer (individuellt, par, grupp) och konkreta exempel på aktiviteter.
+### Lektion 1 — [fokus]
+[2–4 meningar]
 
-## 🔍 Bedömning
-Hur läraren kan följa elevernas progression — formativ bedömning och eventuella kunskapskrav.
+(fortsätt till och med Lektion ${formData.lessonCount})
 
 ## 📖 Material
 Vilka material och resurser som föreslås.
 
+## 🎭 Aktiviteter och arbetssätt
+Förslag på varierade arbetsformer (individuellt, par, grupp) och konkreta exempel på aktiviteter.
+
 ## 🌟 Anpassningar
 Kort om stöd för elever som behöver extra hjälp respektive utmaning.
+
+## 🔍 Bedömning
+Hur läraren kan följa elevernas progression — formativ bedömning och eventuella kunskapskrav.
 ${formData.notes ? `\n**SÄRSKILDA ÖNSKEMÅL:**\n${formData.notes}\n` : ''}
 Skriv som ett genomtänkt förslag läraren kan utgå från och göra till sitt eget.`;
 }
