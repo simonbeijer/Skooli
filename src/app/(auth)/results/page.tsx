@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Button from "../../components/button";
@@ -11,7 +11,7 @@ interface EnhancedLessonPlanData {
   theme: string;
   grade: string;
   subjects: string;
-  duration: string;
+  lessonCount: number;
   notes?: string;
   generatedPlan: string;
   timestamp: string;
@@ -55,7 +55,7 @@ export default function ResultsPage() {
         }
 
         // Validate data structure integrity
-        if (!parsedData.theme || !parsedData.grade || !parsedData.subjects) {
+        if (!parsedData.theme || !parsedData.grade || !parsedData.subjects || !parsedData.lessonCount) {
           setError("Lektionsplanens data är ofullständig eller skadad.");
           localStorage.removeItem("lessonPlanData");
           setIsLoading(false);
@@ -79,6 +79,31 @@ export default function ResultsPage() {
 
     loadLessonPlan();
   }, []);
+
+  // Parse lesson plan markdown into H1 title + H2-keyed sections
+  const parsedPlan = useMemo(() => {
+    const lines = lessonPlan.split("\n");
+    let h1: string | null = null;
+    const sections: { title: string; body: string }[] = [];
+    let current: { title: string; body: string } | null = null;
+    for (const line of lines) {
+      if (line.startsWith("# ")) {
+        h1 = line.slice(2).trim();
+      } else if (line.startsWith("## ")) {
+        if (current) sections.push(current);
+        current = { title: line.slice(3).trim(), body: "" };
+      } else if (current) {
+        current.body += line + "\n";
+      }
+    }
+    if (current) sections.push(current);
+    return { h1, sections };
+  }, [lessonPlan]);
+
+  const isOpenByDefault = (title: string) => {
+    const t = title.toLowerCase();
+    return t.includes("arbetsgång") || t.includes("översikt");
+  };
 
   // Convert markdown to clean plain text
   const stripMarkdown = (text: string) => {
@@ -129,10 +154,10 @@ export default function ResultsPage() {
   // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F0F7F6]">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#3E8E7E] mx-auto"></div>
-          <p className="mt-4 text-[#333] font-medium">Laddar lektionsplan...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-grey font-medium">Laddar lektionsplan...</p>
         </div>
       </div>
     );
@@ -141,7 +166,7 @@ export default function ResultsPage() {
   // Error state - No AI content or corrupted data
   if (error || !lessonPlan || !formData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F0F7F6]">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center bg-red-50 p-8 rounded-2xl max-w-md border border-red-200">
           <div className="text-red-500 text-6xl mb-4">⚠️</div>
           <h2 className="text-xl font-playfair font-bold text-red-800 mb-4">
@@ -154,7 +179,7 @@ export default function ResultsPage() {
             callBack={() => router.push("/generate")}
             text="Tillbaka till formulär"
             variant="primary"
-            className="bg-[#3E8E7E] hover:bg-[#2D6B5E] border-[#3E8E7E]"
+            className="bg-primary hover:bg-primary-dark border-primary"
           />
         </div>
       </div>
@@ -168,7 +193,7 @@ export default function ResultsPage() {
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-end">
           <Link
             href="/generate"
-            className="flex items-center space-x-2 text-[#333] hover:text-[#3E8E7E] transition-colors"
+            className="flex items-center space-x-2 text-grey hover:text-primary transition-colors"
           >
             <svg
               className="h-4 w-4"
@@ -190,8 +215,8 @@ export default function ResultsPage() {
 
       <main className="max-w-6xl mx-auto px-6 py-16 relative z-10">
         {/* Success Message */}
-        <div className="bg-white rounded-2xl p-6 mb-8 border border-[#E6F2F1] flex items-center space-x-4">
-          <div className="w-8 h-8 bg-[#3E8E7E] rounded-full flex items-center justify-center flex-shrink-0">
+        <div className="bg-white rounded-2xl p-6 mb-8 border border-muted flex items-center space-x-4">
+          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
             <svg
               className="h-5 w-5 text-white"
               fill="none"
@@ -207,18 +232,11 @@ export default function ResultsPage() {
             </svg>
           </div>
           <div>
-            <h2 className="text-xl font-playfair font-bold text-[#1C1C1C]">
+            <h2 className="text-xl font-playfair font-bold text-foreground">
               Din Lektionsplan är Klar!
             </h2>
-            <p className="text-[#333]">
-              Genererad enligt Läroplanen för • {formData.theme} • åk {formData.grade} • {formData.subjects} • {(
-                {
-                  "1-vecka": "1 vecka",
-                  "2-veckor": "2 veckor",
-                  "3-veckor": "3 veckor",
-                  "1-manad": "1 månad",
-                } as Record<string, string>
-              )[formData.duration] || formData.duration}
+            <p className="text-grey">
+              Genererad enligt Läroplanen för • {formData.theme} • åk {formData.grade} • {formData.subjects} • {formData.lessonCount === 1 ? "1 lektion" : `${formData.lessonCount} lektioner`}
             </p>
           </div>
         </div>
@@ -273,30 +291,52 @@ export default function ResultsPage() {
           </Button>
         </div>
 
-        {/* Lesson Plan Content — Option C: high contrast with accent border */}
-        <div className="bg-white rounded-2xl p-10 shadow-lg border border-[#3E8E7E]/20 border-t-4 border-t-[#3E8E7E]">
-          <div className="text-[#1C1C1C] leading-relaxed max-w-none">
-            <ReactMarkdown 
-              components={{
-                h1: ({children}) => <h1 className="text-2xl font-bold text-[#1C1C1C] mt-8 mb-6 first:mt-0">{children}</h1>,
-                h2: ({children}) => <h2 className="text-xl font-bold text-[#1C1C1C] mt-6 mb-4">{children}</h2>,
-                h3: ({children}) => <h3 className="text-lg font-bold text-[#1C1C1C] mt-4 mb-3">{children}</h3>,
-                p: ({children}) => <p className="text-[#1C1C1C] mb-4 leading-relaxed">{children}</p>,
-                ul: ({children}) => <ul className="mb-6 space-y-2 pl-6">{children}</ul>,
-                ol: ({children}) => <ol className="mb-6 space-y-2 pl-6">{children}</ol>,
-                li: ({children}) => <li className="text-[#1C1C1C] list-disc">{children}</li>,
-                strong: ({children}) => <strong className="font-bold text-[#1C1C1C]">{children}</strong>,
-                hr: () => null,
-              }}
-            >
-              {lessonPlan}
-            </ReactMarkdown>
+        {/* Lesson Plan Content — accordion sections */}
+        <div className="bg-white rounded-2xl p-10 shadow-lg border border-primary/20 border-t-4 border-t-primary border-b-4 border-b-primary">
+          {parsedPlan.h1 && (
+            <h1 className="text-2xl font-bold text-foreground mb-8">{parsedPlan.h1}</h1>
+          )}
+          <div className="divide-y divide-muted">
+            {parsedPlan.sections.map((section, i) => (
+              <details
+                key={i}
+                open={isOpenByDefault(section.title)}
+                className="group py-4 first:pt-0 last:pb-0 rounded-2xl border border-primary/20 border-b-4 border-b-primary p-4 mb-4"
+              >
+                <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden flex items-center justify-between gap-4 py-2 text-xl font-bold text-foreground hover:text-primary transition-colors">
+                  <span>{section.title}</span>
+                  <svg
+                    className="w-5 h-5 transition-transform group-open:rotate-180 shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="pt-4 text-foreground leading-relaxed">
+                  <ReactMarkdown
+                    components={{
+                      h3: ({ children }) => <h3 className="text-lg font-bold text-foreground mt-4 mb-3">{children}</h3>,
+                      p: ({ children }) => <p className="text-foreground mb-4 leading-relaxed">{children}</p>,
+                      ul: ({ children }) => <ul className="mb-6 space-y-2 pl-6">{children}</ul>,
+                      ol: ({ children }) => <ol className="mb-6 space-y-2 pl-6">{children}</ol>,
+                      li: ({ children }) => <li className="text-foreground list-disc">{children}</li>,
+                      strong: ({ children }) => <strong className="font-bold text-foreground">{children}</strong>,
+                      hr: () => null,
+                    }}
+                  >
+                    {section.body}
+                  </ReactMarkdown>
+                </div>
+              </details>
+            ))}
           </div>
         </div>
 
         {/* Footer Actions */}
         <div className="text-center mt-12 space-y-4">
-          <p className="text-[#333]">
+          <p className="text-grey">
             Behöver du göra ändringar? Kopiera texten och redigera i ditt
             favoritprogram.
           </p>
