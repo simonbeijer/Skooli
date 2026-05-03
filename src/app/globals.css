@@ -7,7 +7,15 @@
   --color-foreground: var(--foreground);
   --color-grey: var(--grey);
   --color-primary: var(--primary-color);
+  --color-primary-dark: #2D6B5E;
+  --color-primary-light: #6BB3A8;
   --color-secondary: var(--secondary-color);
+  --color-accent: #A4D4AE;
+  --color-muted: #E6F2F1;
+  --color-shape-1: #E4F1EF;
+  --color-shape-2: #D8EDE9;
+  --color-shape-3: #E8F4F1;
+  --color-shape-4: #DCF0EC;
 }
 
 :root {
