@@ -188,7 +188,7 @@ function generateEnhancedSwedishPrompt(
 Skriv ett övergripande förslag på lektionsplan för temat "${formData.theme}", årskurs ${formData.grade}, ämnen ${subjectList}. Antal lektioner: ${formData.lessonCount}. Varje lektion är ca 60 minuter.
 
 **OMFATTNING:**
-Det här är ett förslag som läraren ska kunna anpassa — inte ett minutpreciserat schema. Producera exakt ${formData.lessonCount} ${lessonWord} i Arbetsgång-sektionen, numrerade Lektion 1, Lektion 2, ... Lektion ${formData.lessonCount}. Varje lektion ska beskrivas som ett ~60-minutspass utan klockslag, utan minutscheman och utan veckodagar. Övriga sektioner (Material, Aktiviteter, Anpassningar, Bedömning) beskriver arbetsområdet som helhet.
+Det här är ett förslag som läraren ska kunna anpassa. Producera exakt ${formData.lessonCount} ${lessonWord} i Arbetsgång-sektionen, numrerade Lektion 1, Lektion 2, ... Lektion ${formData.lessonCount}. Varje lektion är 60 minuter och delas in i 3–5 delar (t.ex. introduktion, huvudaktivitet, avslutning) där varje del har en uppskattad tid i minuter. Summan av delarna per lektion ska bli ca 60 minuter. Använd inga klockslag och inga veckodagar — endast minutangivelser per del. Övriga sektioner (Material, Aktiviteter, Anpassningar, Bedömning) beskriver arbetsområdet som helhet.
 
 **FORMAT:**
 Börja svaret direkt med första rubriken (# 📚 Lektionsplan: ...). Skriv ingen inledande mening eller sammanfattning innan rubriken. Använd inga horisontella linjer (---) någonstans i texten.
@@ -210,11 +210,13 @@ ${curriculumContext}
 - **Förmågor som utvecklas:** kort lista
 - **Lärandemål:** vad eleverna ska kunna efter arbetsområdet
 
-## ⏰ Arbetsgång (${formData.lessonCount} ${lessonWord})
-Lista varje lektion i ordning. För varje lektion: en kort rubrik som beskriver fokus, sedan 2–4 meningar om aktivitet, syfte och elevernas roll. Inga klockslag, inga veckodagar.
+## ⏰ Arbetsgång (${formData.lessonCount} ${lessonWord} à 60 min)
+Lista varje lektion i ordning. För varje lektion: en kort rubrik med fokus, sedan 3–5 delar med uppskattad tid per del. Summan per lektion ska bli ca 60 minuter. Inga klockslag, inga veckodagar.
 
 ### Lektion 1 — [fokus]
-[2–4 meningar]
+- **[Delens namn] (~X min):** kort beskrivning av aktivitet och syfte
+- **[Delens namn] (~X min):** kort beskrivning
+- **[Delens namn] (~X min):** kort beskrivning
 
 (fortsätt till och med Lektion ${formData.lessonCount})
 
