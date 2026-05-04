@@ -214,9 +214,9 @@ ${curriculumContext}
 Lista varje lektion i ordning. För varje lektion: en kort rubrik med fokus, sedan 3–5 delar med uppskattad tid per del. Summan per lektion ska bli ca 60 minuter. Inga klockslag, inga veckodagar.
 
 ### Lektion 1 — [fokus]
-- **[Delens namn] (~X min):** kort beskrivning av aktivitet och syfte
-- **[Delens namn] (~X min):** kort beskrivning
-- **[Delens namn] (~X min):** kort beskrivning
+- **[Delens namn] (ca X min):** kort beskrivning av aktivitet och syfte
+- **[Delens namn] (ca X min):** kort beskrivning
+- **[Delens namn] (ca X min):** kort beskrivning
 
 (fortsätt till och med Lektion ${formData.lessonCount})
 
