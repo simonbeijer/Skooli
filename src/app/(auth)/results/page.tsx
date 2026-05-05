@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Button from "../../components/button";
@@ -79,31 +79,6 @@ export default function ResultsPage() {
 
     loadLessonPlan();
   }, []);
-
-  // Parse lesson plan markdown into H1 title + H2-keyed sections
-  const parsedPlan = useMemo(() => {
-    const lines = lessonPlan.split("\n");
-    let h1: string | null = null;
-    const sections: { title: string; body: string }[] = [];
-    let current: { title: string; body: string } | null = null;
-    for (const line of lines) {
-      if (line.startsWith("# ")) {
-        h1 = line.slice(2).trim();
-      } else if (line.startsWith("## ")) {
-        if (current) sections.push(current);
-        current = { title: line.slice(3).trim(), body: "" };
-      } else if (current) {
-        current.body += line + "\n";
-      }
-    }
-    if (current) sections.push(current);
-    return { h1, sections };
-  }, [lessonPlan]);
-
-  const isOpenByDefault = (title: string) => {
-    const t = title.toLowerCase();
-    return t.includes("arbetsgång") || t.includes("översikt");
-  };
 
   // Convert markdown to clean plain text
   const stripMarkdown = (text: string) => {
@@ -291,47 +266,32 @@ export default function ResultsPage() {
           </Button>
         </div>
 
-        {/* Lesson Plan Content — accordion sections */}
-        <div className="bg-white rounded-2xl p-10 shadow-lg border border-primary/20 border-t-4 border-t-primary border-b-4 border-b-primary">
-          {parsedPlan.h1 && (
-            <h1 className="text-2xl font-bold text-foreground mb-8">{parsedPlan.h1}</h1>
-          )}
-          <div className="divide-y divide-muted">
-            {parsedPlan.sections.map((section, i) => (
-              <details
-                key={i}
-                open={isOpenByDefault(section.title)}
-                className="group py-4 first:pt-0 last:pb-0 rounded-2xl border border-primary/20 border-b-4 border-b-primary p-4 mb-4"
-              >
-                <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden flex items-center justify-between gap-4 py-2 text-xl font-bold text-foreground hover:text-primary transition-colors">
-                  <span>{section.title}</span>
-                  <svg
-                    className="w-5 h-5 transition-transform group-open:rotate-180 shrink-0"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </summary>
-                <div className="pt-4 text-foreground leading-relaxed">
-                  <ReactMarkdown
-                    components={{
-                      h3: ({ children }) => <h3 className="text-lg font-bold text-foreground mt-4 mb-3">{children}</h3>,
-                      p: ({ children }) => <p className="text-foreground mb-4 leading-relaxed">{children}</p>,
-                      ul: ({ children }) => <ul className="mb-6 space-y-2 pl-6">{children}</ul>,
-                      ol: ({ children }) => <ol className="mb-6 space-y-2 pl-6">{children}</ol>,
-                      li: ({ children }) => <li className="text-foreground list-disc">{children}</li>,
-                      strong: ({ children }) => <strong className="font-bold text-foreground">{children}</strong>,
-                      hr: () => null,
-                    }}
-                  >
-                    {section.body}
-                  </ReactMarkdown>
-                </div>
-              </details>
-            ))}
-          </div>
+        {/* Lesson Plan Content */}
+        <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-10 border border-white/50 shadow-lg">
+          <ReactMarkdown
+            components={{
+              h1: ({ children }) => (
+                <h1 className="text-3xl font-playfair font-bold text-foreground mb-4 first:mt-0">{children}</h1>
+              ),
+              h2: ({ children }) => (
+                <h2 className="text-2xl font-playfair font-bold text-foreground mt-10 mb-4 pb-2 border-b border-muted">{children}</h2>
+              ),
+              h3: ({ children }) => (
+                <h3 className="text-lg font-semibold text-primary mt-6 mb-2">{children}</h3>
+              ),
+              p: ({ children }) => (
+                <p className="text-foreground mb-4 leading-relaxed">{children}</p>
+              ),
+              ul: ({ children }) => <ul className="mb-6 space-y-2 pl-6 list-disc">{children}</ul>,
+              ol: ({ children }) => <ol className="mb-6 space-y-2 pl-6 list-decimal">{children}</ol>,
+              li: ({ children }) => <li className="text-foreground">{children}</li>,
+              strong: ({ children }) => <strong className="font-semibold text-foreground">{children}</strong>,
+              em: ({ children }) => <em className="italic text-primary">{children}</em>,
+              hr: () => <hr className="my-8 border-muted" />,
+            }}
+          >
+            {lessonPlan}
+          </ReactMarkdown>
         </div>
 
         {/* Footer Actions */}

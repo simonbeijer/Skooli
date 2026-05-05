@@ -203,14 +203,14 @@ ${curriculumContext}
 - Anpassa språk och innehåll till årskursen
 
 **STRUKTUR (markdown med emojis):**
-# 📚 Lektionsplan: ${formData.theme}
+# Lektionsplan: ${formData.theme}
 
-## 🎯 Syfte och mål
+## Syfte och mål
 - **Koppling till Lgr22 centralt innehåll:** ange relevant centralt innehåll
 - **Förmågor som utvecklas:** kort lista
 - **Lärandemål:** vad eleverna ska kunna efter arbetsområdet
 
-## ⏰ Arbetsgång (${formData.lessonCount} ${lessonWord} à 60 min)
+## Arbetsgång (${formData.lessonCount} ${lessonWord} à 60 min)
 Lista varje lektion i ordning. För varje lektion: en kort rubrik med fokus, sedan 3–5 delar med uppskattad tid per del. Summan per lektion ska bli ca 60 minuter. Inga klockslag, inga veckodagar.
 
 ### Lektion 1 — [fokus]
@@ -220,16 +220,16 @@ Lista varje lektion i ordning. För varje lektion: en kort rubrik med fokus, sed
 
 (fortsätt till och med Lektion ${formData.lessonCount})
 
-## 📖 Material
+## Material
 Vilka material och resurser som föreslås.
 
-## 🎭 Aktiviteter och arbetssätt
+## Aktiviteter och arbetssätt
 Förslag på varierade arbetsformer (individuellt, par, grupp) och konkreta exempel på aktiviteter.
 
-## 🌟 Anpassningar
+## Anpassningar
 Kort om stöd för elever som behöver extra hjälp respektive utmaning.
 
-## 🔍 Bedömning
+## Bedömning
 Hur läraren kan följa elevernas progression — formativ bedömning och eventuella kunskapskrav.
 ${formData.notes ? `\n**SÄRSKILDA ÖNSKEMÅL:**\n${formData.notes}\n` : ''}
 Skriv som ett genomtänkt förslag läraren kan utgå från och göra till sitt eget.`;
