@@ -41,3 +41,50 @@
 ### 5. Skooli: test för dashboard-kortet
 - Vad: nytt test `__tests__/dashboard-gotd.test.js` som låser att Grej of the Day-kortet länkar till `NEXT_PUBLIC_GOTD_URL`, och till `http://localhost:3001` när variabeln saknas. Ingen produktionskod ändrad.
 - Granskning: OK. Kontroller: samma körning som uppgift 2 (lint/tsc/build ✔, jest inga nya fel).
+
+### 4. Grej of the Day: gemensam header + "← Tillbaka till Skooli"
+- Vad: `public/index.html` har nu exakt samma header som Skooli (samma klasser, samma bok-logga, "Skooli"). Till höger länken **"← Tillbaka till Skooli"** → `SKOOLI_URL/dashboard`. Loggan går också dit.
+- `SKOOLI_URL` är en miljövariabel (default `http://localhost:3000`), motsvarigheten till `NEXT_PUBLIC_GOTD_URL` i Skooli. Servern (`server.js`) läser index.html en gång vid start och ersätter `{{SKOOLI_URL}}` via `lib/page.js` (värdet HTML-escapas).
+- Verktygets namn "Grej of the Day" och stegflikarna ligger i en egen rad (`.tool-bar`) under headern, med gotds gamla stil (sticky, kant i vald färg). app.js orörd, alla selectors finns kvar.
+- `public/theme.css` synkad igen (nu med header-stilen).
+- Test: `test/page.test.js` (ersättning, escaping, default-URL, headerns HTML, länktexten).
+- Granskning: underkänd först — `replaceAll` med sträng tolkade `$`-tecken i URL:en så en konstig URL kunde bryta ut ur attributet. Fixat med funktion + test, sedan OK.
+- Kontroller: `node --check` ✔, npm test 10/10 ✔, start-rök: `/`, style.css, theme.css, app.js 200, länken pekar på http://localhost:3000/dashboard.
+
+---
+
+## SLUTRAPPORT
+
+### Gjort
+| # | Vad | Commit |
+|---|---|---|
+| A | `docs/auth-plan.md` — utredning om delad inloggning, inget implementerat | Skooli `d4c3378` |
+| 1 | `shared/theme.css` med design tokens; Skooli hämtar sina värden därifrån | Skooli `5110e77` |
+| 2 | Skoolis header använder gemensamma `.sk-header`-klasser från theme.css | Skooli `8abb2c8` |
+| 5 | Test som låser dashboard-kortets länk till Grej of the Day | Skooli `b782390` |
+| 3 | Gotd använder samma theme.css (kopia + `npm run sync:theme` + test) | gotd `2eb4244` |
+| 4 | Gotd har samma header + "← Tillbaka till Skooli" | gotd `3302769` |
+
+Allt ligger på branch `skooli-plattform` i båda repona. Inget pushat, inget mergat.
+
+### Slutkontroll (ny granskare): GRÖN på alla 7 punkter
+1. Bygger: Skooli build/lint/tsc ✔; jest 22 fail på både main och branch (samma gamla tester), 49 nya tester gröna. Gotd npm test 10/10, node --check ✔. Inga nya npm-paket.
+2. Startar: Skooli `/`, `/login`, `/demo` 200, `/dashboard` → 307 till login. Gotd på 3001: `/`, css, js 200.
+3. Dashboard-kortet → `http://localhost:3001` (oförändrad kod, nu låst med test), gotd svarar där.
+4. "← Tillbaka till Skooli" → `http://localhost:3000/dashboard`, svarar.
+5. theme.css byte-identisk i båda; samma header-klasser och samma logga (SVG).
+6. Skärmdumpar visar samma header, typsnitt och färger. Ligger i `/private/tmp/claude-501/-Users-simon-dev-Skooli/324c5b2c-eda6-49c2-928e-d48f9b8b8529/scratchpad/final/` (tillfällig mapp, kan försvinna).
+7. Inget trasigt: gotds API-routes, app.js, lib/ orörda; färgväljaren fungerar.
+
+### Kolla först imorgon
+1. Starta båda: Skooli `npm run dev` (3000) och gotd `PORT=3001 npm start`. Logga in → dashboard → klicka kortet → "← Tillbaka till Skooli". 
+2. Titta på Skoolis nya header (vit bar med linje under, ingen stor marginal ovanför längre) på `/`, `/dashboard`, `/generate`, `/results`. Gillar du den?
+3. Läs `docs/auth-plan.md` (rekommendation + öppna frågor).
+
+### Öppna frågor
+- **Accentfärg i gotd:** gotds knappar/flikar följer presentationens valda färg (default limegrön), Skoolis är teal. Ska gotds UI låsas till Skoolis teal, och färgväljaren bara styra presentationen? (Lät det vara — det är en funktion.)
+- **Verktygsraden** under headern i gotd går kant till kant medan headern är centrerad (1152px). Vill du att den linjerar?
+- **theme.css som kopia:** gotd har en kopia som synkas med `npm run sync:theme`. Vid driftsättning på samma domän (se auth-plan) kan gotd i stället länka Skoolis `/theme.css` direkt. Ditt val senare.
+- **Typsnitt laddas två gånger i Skooli** (Google Fonts-import i theme.css + `next/font` i layout.tsx). Fanns redan innan; ej ändrat.
+- **22 gamla jest-fel** på main (api-utils, auth, button, inputField, userContext). Orörda — vill du att de lagas ett annat pass?
+- Gotd startar på port 3000 som standard (krockar med Next). Kör alltid `PORT=3001`. Ändra default?

@@ -48,3 +48,21 @@
 [00:41] overseer → tester och build uppgift 2+5 | grönt (jest 22 gamla fail, 184 pass)
 [00:41] overseer → commit 8abb2c8 "Move header styling to shared theme.css"
 [00:41] overseer → commit b782390 "Add test for Grej of the Day dashboard link"
+[00:41] overseer → startar uppgift 4: gemensam header i gotd + Tillbaka-länk
+  [00:41] kodare-4 → får uppgift 4 från overseer
+  [00:43] kodare-4 → klar, lämnar till overseer | 58k tokens | 6 filer, npm test 9/9, rök OK
+  [00:43] granskare-4 → granskar uppgift 4 från kodare-4
+  [00:44] granskare-4 → UNDERKÄNT till overseer | 53k tokens | replaceAll tolkar $-mönster i URL → kodare-4 tar över
+  [00:44] kodare-4 → klar med fix, lämnar till overseer | 60k tokens | npm test 10/10
+  [00:44] granskare-4 → granskar om uppgift 4
+  [00:45] granskare-4 → OK till overseer | 54k tokens
+[00:45] overseer → tester uppgift 4 (gotd) | grönt: node --check, npm test 10/10, rök 200
+[00:45] overseer → commit 3302769 (gotd) "Add Skooli's shared header with link back to Skooli"
+[00:45] overseer → alla uppgifter klara, startar slutkontroll
+  [00:45] slutgranskare-1 → får slutkontroll från overseer
+  [00:48] slutgranskare-1 → GRÖNT till overseer | 65k tokens | 7/7 punkter
+[00:48] overseer → granskat skärmdumpar Skooli + gotd | samma header/typsnitt/färger
+[00:48] overseer → slutrapport i PROGRESS.md
+[00:48] overseer → commit (se git log) "Add night summary"
+
+TOTALT: 14 agenter (1 utforskare, 1 utredare, 5 kodare, 6 granskare, 1 slutgranskare) | 8 commits (6 Skooli, 2 gotd) | ca 742k tokens (summa av sista rapporterade värdet per agent; overseer ej inräknad)
