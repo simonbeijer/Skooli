@@ -4,10 +4,15 @@ import crypto from "node:crypto";
 import { generateContent, generateMore } from "./lib/content.js";
 import { searchImages, listSources } from "./lib/images.js";
 import { buildPptx } from "./lib/pptx.js";
+import { renderIndex, skooliUrlFromEnv } from "./lib/page.js";
+import { readFileSync } from "node:fs";
 
 const app = express();
 app.use(express.json({ limit: "60mb" })); // egna uppladdade bilder skickas som data-URL:er
-app.use(express.static("public"));
+// Startsidan får Skoolis adress ifylld (SKOOLI_URL), därför serveras den före de statiska filerna.
+const indexHtml = renderIndex(readFileSync("public/index.html", "utf8"), skooliUrlFromEnv(process.env));
+app.get(["/", "/index.html"], (_req, res) => res.type("html").send(indexHtml));
+app.use(express.static("public", { index: false }));
 
 // Textgenereringen tar 1–3 minuter, så den körs som ett jobb som webbsidan frågar efter.
 const jobs = new Map();
