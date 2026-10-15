@@ -84,4 +84,20 @@ describe('shared/theme.css', () => {
     expect(css).toContain('var(--sk-color-primary)');
     expect(css).toContain('var(--sk-shadow-md)');
   });
+
+  test.each([
+    '.sk-header',
+    '.sk-header__inner',
+    '.sk-header__brand',
+    '.sk-header__logo',
+    '.sk-header__name',
+    '.sk-header__link',
+    '.sk-header__button',
+    '.sk-header__nav',
+    '.sk-header__actions',
+  ])('theme.css innehåller %s', (selector) => {
+    const css = fs.readFileSync(themePath, 'utf8');
+    const re = new RegExp(selector.replace(/[.\-]/g, (c) => '\\' + c) + '(?![\\w-])');
+    expect(css).toMatch(re);
+  });
 });
