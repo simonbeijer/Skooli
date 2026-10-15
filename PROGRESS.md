@@ -13,3 +13,10 @@
 - Fynd i koden värda att veta: cookien `token` har `SameSite=Strict` (länk från webbmejl → hamnar på login trots inloggad); middleware släpper igenom alla sökvägar med punkt (filer) — skyddar alltså bara sidor.
 - Granskning: underkänd först (5 småfel om utloggning, middleware-matcher, port), rättad, sedan OK.
 - Kontroller: bara dokument, lint/test/build ej relevant.
+
+### 1. Skooli: gemensam `shared/theme.css`
+- Vad: ny fil `shared/theme.css` = plattformens design tokens (`--sk-color-*`, `--sk-font-body/heading`, `--sk-space-1..8`, `--sk-radius-*`, `--sk-shadow-*`, `--sk-content-width`) + Google Fonts-import (Inter, Playfair Display).
+- `src/app/globals.css` importerar den först och alla gamla variabler (`--primary-color`, `--color-primary-dark` osv.) pekar nu på tokens. Värdena finns alltså bara på ett ställe; Skooli ser exakt likadant ut.
+- Test: `__tests__/theme.test.js` (31 tester) låser token-värdena och att globals.css använder dem.
+- Granskning: OK. Granskaren byggde main och branchen och bekräftade att typsnittsimporten hamnar först i båda (ingen regression).
+- Kontroller: lint ✔, tsc ✔, build ✔, jest 22 fail = samma gamla baslinje, 166 pass.
