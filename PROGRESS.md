@@ -37,3 +37,7 @@
 - Test: `__tests__/header.test.js` (alla states, länkar, logolänk, dropdown) + klasserna i `theme.test.js`.
 - Granskning: kodaren ändrade först logolänken → backat. Sedan OK.
 - Kontroller: lint ✔, tsc ✔, build ✔, jest 22 gamla fail, 184 pass.
+
+### 5. Skooli: test för dashboard-kortet
+- Vad: nytt test `__tests__/dashboard-gotd.test.js` som låser att Grej of the Day-kortet länkar till `NEXT_PUBLIC_GOTD_URL`, och till `http://localhost:3001` när variabeln saknas. Ingen produktionskod ändrad.
+- Granskning: OK. Kontroller: samma körning som uppgift 2 (lint/tsc/build ✔, jest inga nya fel).
