@@ -4,25 +4,25 @@
   --green: var(--theme);
   --green-dark: color-mix(in srgb, var(--theme) 38%, #10140f);
   --green-soft: color-mix(in srgb, var(--theme) 14%, #fff);
-  --ink: #1b1f1a;
+  --ink: var(--sk-color-text);
   --muted: #646b62;
   --faint: #8d948a;
-  --line: #e3e7e1;
+  --line: var(--sk-color-border);
   --line-strong: #cfd5cc;
-  --bg: #f5f7f4;
-  --card: #ffffff;
+  --bg: var(--sk-color-bg);
+  --card: var(--sk-color-surface);
   --red: #b3261e;
   --red-soft: #fdf0ee;
   --yellow-soft: #fff6d6;
-  --radius: 14px;
-  --radius-sm: 9px;
+  --radius: var(--sk-radius-md);
+  --radius-sm: var(--sk-radius-sm);
   --ring: 0 0 0 3px color-mix(in srgb, var(--theme) 55%, transparent);
   --h: 36px; /* höjd på knappar och fält */
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 body {
-  margin: 0; font-family: "Lexend", system-ui, sans-serif; color: var(--ink); font-weight: 300;
+  margin: 0; font-family: var(--sk-font-body); color: var(--ink); font-weight: 400;
   font-size: 16px; line-height: 1.5; background: var(--bg);
   -webkit-font-smoothing: antialiased;
 }
@@ -38,7 +38,7 @@ header {
   padding: 10px 24px; display: flex; gap: 32px; align-items: center; flex-wrap: wrap;
   position: sticky; top: 0; z-index: 5;
 }
-header h1 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -.01em; display: flex; align-items: center; gap: 10px; }
+header h1 { margin: 0; font-family: var(--sk-font-heading); font-size: 18px; font-weight: 600; letter-spacing: -.01em; display: flex; align-items: center; gap: 10px; }
 .logo { width: 14px; height: 14px; border-radius: 50%; background: var(--theme); box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--theme) 70%, #000); }
 nav { display: flex; gap: 4px; }
 nav button {
@@ -54,7 +54,7 @@ nav button.active { color: var(--ink); font-weight: 400; background: var(--green
 nav button.active .num { background: var(--green-dark); border-color: var(--green-dark); color: #fff; }
 
 main { max-width: 920px; margin: 0 auto; padding: 28px 16px 96px; }
-h2 { font-weight: 600; font-size: 24px; letter-spacing: -.015em; margin: 0 0 20px; }
+h2 { font-family: var(--sk-font-heading); font-weight: 600; font-size: 24px; letter-spacing: -.015em; margin: 0 0 20px; }
 h3 { font-weight: 600; font-size: 17px; margin: 0; display: flex; align-items: center; gap: 8px; }
 
 .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; margin-bottom: 14px; }

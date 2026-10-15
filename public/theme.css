@@ -1,0 +1,46 @@
+/* Gemensamma design tokens för Skooli-plattformen. Original här; grej-of-the-day har en kopia (npm run sync:theme). Ändra bara här. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  /* Färger */
+  --sk-color-primary: #3E8E7E;
+  --sk-color-primary-dark: #2D6B5E;
+  --sk-color-primary-light: #6BB3A8;
+  --sk-color-secondary: #88C9BF;
+  --sk-color-accent: #A4D4AE;
+  --sk-color-bg: #F0F7F6;
+  --sk-color-surface: #FFFFFF;
+  --sk-color-muted: #E6F2F1;
+  --sk-color-text: #1C1C1C;
+  --sk-color-text-soft: #333333;
+  --sk-color-border: #E6F2F1;
+  --sk-color-glass-bg: rgba(255, 255, 255, 0.8);
+  --sk-color-glass-border: rgba(255, 255, 255, 0.5);
+
+  /* Typsnitt */
+  --sk-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --sk-font-heading: 'Playfair Display', serif;
+
+  /* Avstånd (4px-skala) */
+  --sk-space-1: 4px;
+  --sk-space-2: 8px;
+  --sk-space-3: 12px;
+  --sk-space-4: 16px;
+  --sk-space-5: 24px;
+  --sk-space-6: 32px;
+  --sk-space-7: 48px;
+  --sk-space-8: 64px;
+
+  /* Radier */
+  --sk-radius-sm: 8px;
+  --sk-radius-md: 12px;
+  --sk-radius-lg: 16px;
+  --sk-radius-xl: 24px;
+
+  /* Skuggor */
+  --sk-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --sk-shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  /* Layout */
+  --sk-content-width: 1152px;
+}
