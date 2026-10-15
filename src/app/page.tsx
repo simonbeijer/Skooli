@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import Button from "./components/button";
 import Header from "./components/header";
-import { Analytics } from "@vercel/analytics/next"
 
 export default function Home() {
   return (
@@ -87,8 +86,6 @@ export default function Home() {
               </Link>
             </div>
           </div>
-
-        <Analytics />
 
         </div>
 
