@@ -6,7 +6,7 @@
  * and robust error handling.
  */
 
-import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
+import { GoogleGenAI, HarmCategory, HarmBlockThreshold } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
 import { findRelevantCurriculum } from "@/lib/curriculum-data";
 import { verifyAuth } from "@/lib/auth";
@@ -241,31 +241,30 @@ Skriv som ett genomtänkt förslag läraren kan utgå från och göra till sitt 
 
 async function generatePlanWithGemini(prompt: string, apiKey: string): Promise<string> {
   try {
-    const genAI = new GoogleGenerativeAI(apiKey);
-    
-    const model = genAI.getGenerativeModel({ 
+    const genAI = new GoogleGenAI({ apiKey });
+
+    const response = await genAI.models.generateContent({
       model: process.env.GEMINI_MODEL || "gemini-2.5-flash",
-      generationConfig: {
+      contents: prompt,
+      config: {
         temperature: 0.3,
         topP: 0.8,
         topK: 40,
         maxOutputTokens: 8192,
+        safetySettings: [
+          {
+            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+        ],
       },
-      safetySettings: [
-        {
-          category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-          threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-        },
-        {
-          category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-          threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-        },
-      ],
     });
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const generatedPlan = response.text();
+    const generatedPlan = response.text;
     
     if (!generatedPlan || generatedPlan.trim().length === 0) {
       throw new Error(ERROR_MESSAGES.EMPTY_RESPONSE);

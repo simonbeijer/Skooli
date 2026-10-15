@@ -91,6 +91,30 @@ export default function Dashboard() {
           </div>
         </a>
 
+        {/* TOOL: Grej of the Day - standalone app, linked by URL */}
+        <a
+          href={process.env.NEXT_PUBLIC_GOTD_URL || "http://localhost:3001"}
+          className="group block relative overflow-hidden rounded-3xl p-8 sm:p-10 mb-8 bg-gradient-to-br from-secondary via-secondary to-primary shadow-xl hover:shadow-2xl transition-all duration-200 border border-white/20"
+          aria-label="Skapa Grej of the Day"
+        >
+          <div className="absolute -top-16 -right-16 w-56 h-56 bg-white/10 rounded-full pointer-events-none"></div>
+
+          <div className="relative flex-1 max-w-xl">
+            <h2 className="text-3xl sm:text-4xl font-playfair font-bold text-white mb-3 leading-tight">
+              Grej of the Day
+            </h2>
+            <p className="text-lg text-white/90 font-inter mb-6 leading-relaxed">
+              Skapa veckans grej som presentation — ledtrådar, fakta och bilder, klar att öppna i Google Presentationer.
+            </p>
+            <div className="inline-flex items-center gap-2 bg-white text-primary font-semibold font-inter px-6 py-3 rounded-xl shadow-md group-hover:shadow-lg group-hover:gap-3 transition-all duration-200">
+              <span>Starta nu</span>
+              <svg className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </div>
+          </div>
+        </a>
+
         {/* SECONDARY: Compact user info strip */}
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-white/50 shadow-sm mb-8">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:divide-x sm:divide-muted">

@@ -19,7 +19,7 @@
     "seed": "node prisma/seed.js"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.21.0",
+    "@google/genai": "^2.30.0",
     "@heroicons/react": "^2.2.0",
     "@prisma/client": "^6.9.0",
     "@tailwindcss/postcss": "^4.1.10",
