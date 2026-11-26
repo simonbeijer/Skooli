@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const pub = (f) => join(root, 'public', f);
-const skooliDir = resolve(root, process.env.SKOOLI_DIR || '../Skooli');
+const skooliDir = resolve(root, process.env.SKOOLI_DIR || '../..');
 const original = join(skooliDir, 'shared', 'theme.css');
 
 test('public/theme.css finns', () => {

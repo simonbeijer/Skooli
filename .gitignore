@@ -13,9 +13,6 @@ OLD_docs/*
 .claude/*
 
 CLAUDE.md
-tools
-tools/
-tools/*
 §
 
 # dependencies
