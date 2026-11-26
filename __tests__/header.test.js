@@ -44,12 +44,12 @@ describe.each(['public', 'authenticated', 'login'])('Header (%s)', (state) => {
 });
 
 describe('Header länkar', () => {
-  test('public: Skapa Lektion, Demo, Logga In, Kom Igång', () => {
+  test('public: Verktyg, Demo, Logga In, Kom Igång', () => {
     const { container } = renderHeader('public');
     const nav = container.querySelector('nav.sk-header__nav');
     expect(nav).toHaveAttribute('aria-label', 'Huvudmeny');
     const expected = {
-      'Skapa Lektion': '/login',
+      'Verktyg': '/login',
       Demo: '/demo',
       'Logga In': '/login',
       'Kom Igång': '/login',
@@ -59,7 +59,7 @@ describe('Header länkar', () => {
       expect(a).toBeDefined();
       expect(a).toHaveAttribute('href', href);
     });
-    expect(linkByText(container, 'Skapa Lektion')).toHaveClass('sk-header__link');
+    expect(linkByText(container, 'Verktyg')).toHaveClass('sk-header__link');
     expect(linkByText(container, 'Demo')).toHaveClass('sk-header__link');
     expect(linkByText(container, 'Logga In')).toHaveClass('sk-header__link');
     expect(linkByText(container, 'Kom Igång')).toHaveClass('sk-header__button');

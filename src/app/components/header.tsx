@@ -67,7 +67,7 @@ const Header = ({ state }: HeaderProps) => {
           <nav className="sk-header__nav" aria-label="Huvudmeny">
             {currentState === 'public' && (
               <>
-                <Link href="/login" className="sk-header__link">Skapa Lektion</Link>
+                <Link href="/login" className="sk-header__link">Verktyg</Link>
                 <Link href="/demo" className="sk-header__link">Demo</Link>
               </>
             )}

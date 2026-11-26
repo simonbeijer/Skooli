@@ -17,8 +17,8 @@ const playfairDisplay = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "LessonAI - Skapa Lektionsplaner på 30 Sekunder",
-  description: "Sluta spendera 3-5 timmar varje vecka på att skapa lektionsplaner. Vår AI följer Läroplanen och skapar kompletta planer på några sekunder.",
+  title: "Skooli – Verktyg som gör lärardagen lättare",
+  description: "Skooli samlar AI-verktyg för lärare på ett ställe. Planera lektioner efter Läroplanen och bygg presentationer med Grej of the Day på några sekunder.",
 };
 
 interface RootLayoutProps {
