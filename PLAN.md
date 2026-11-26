@@ -9,7 +9,7 @@ Skooli är "huset": hemsida, inloggning och en dashboard med verktygskort. Varje
 | 1 | Merga `skooli-plattform` i båda repona | Användaren | Branchen är mergad till main i Skooli och grej-of-the-day | Klart |
 | 2 | Radera nattfilerna och skriv PLAN.md | Agent | Roten har bara projektfiler och PLAN.md finns | Klart |
 | 3 | Flytta in grej-of-the-day i Skooli-repot, t.ex. `tools/grej-of-the-day/`, med git-historiken kvar | Agent (commit: användaren) | Ett repo, och båda delarna startar och testerna går som förut | Klart (väntar på användarens commit) |
-| 4 | Laga eller ta bort de 22 tester som fallerar | Agent | Alla tester är gröna och GitHub Actions är grön | Ej påbörjat |
+| 4 | Laga eller ta bort de 22 tester som fallerar | Agent | Alla tester är gröna och GitHub Actions är grön | Klart lokalt (Jest 204/204, grej-of-the-day 10/10, lint rent). Cypress kunde inte köras lokalt. Väntar på användarens commit + push för att se Actions |
 | 5 | Mall för ett verktyg (gemensam theme.css, header, länk tillbaka till Skooli, egen port, egen URL-variabel). Bygg om grej-of-the-day efter mallen | Agent | Mallen finns och grej-of-the-day följer den | Ej påbörjat |
 | 6 | Bygg om dashboarden så att verktygskorten kommer från ett verktygsregister, en fil som listar alla verktyg | Agent | Ett nytt verktyg kräver bara en rad i registret | Ej påbörjat |
 
@@ -35,7 +35,6 @@ Skooli är "huset": hemsida, inloggning och en dashboard med verktygskort. Varje
 - Länkar: Skoolis dashboardkort går till `NEXT_PUBLIC_GOTD_URL` (default `http://localhost:3001`). grej-of-the-days "← Tillbaka till Skooli" går till `SKOOLI_URL` + `/dashboard` (default `http://localhost:3000`). `server.js` ersätter `{{SKOOLI_URL}}` i `index.html` vid start.
 - grej-of-the-day startar på port 3000 som standard, vilket krockar med Next. Kör `PORT=3001 npm start` i `tools/grej-of-the-day/`. Den har egen `package.json` och `node_modules` (kör `npm ci` där).
 - grej-of-the-day testas med `node --test` (inget testpaket): `npm test` i `tools/grej-of-the-day/`. Jest i roten hoppar över `tools/`.
-- De 22 tester som fallerar fanns redan innan nattpasset (api-utils, auth, button, inputField, userContext). Button och inputField väntar sig hårdkodade färger, medan komponenterna använder tokens.
 
 ## Kvar från nattpasset (små frågor, inte egna steg)
 
@@ -51,3 +50,6 @@ Skooli är "huset": hemsida, inloggning och en dashboard med verktygskort. Varje
 - 2026-11-26 (steg 3): grej-of-the-day ligger i `tools/grej-of-the-day/`. Flyttad med subtree-merge (`git merge -s ours --no-commit --allow-unrelated-histories` + `git read-tree --prefix=tools/grej-of-the-day/ -u`), så historiken finns kvar som en andra förälder till merge-commiten. `git log -- tools/grej-of-the-day` visar inte de gamla commitarna (där låg filerna i roten). Använd `git log <merge-commit>^2`.
 - 2026-11-26 (steg 3): `tools` togs bort ur `.gitignore` (låg där sedan första commiten, mappen fanns inte). `jest.config.js` hoppar över `tools/`. Standardsökvägen till Skooli i `sync-theme.js` och `test/theme.test.js` är nu `../..` i stället för `../Skooli`.
 - 2026-11-26 (steg 3): Det gamla repot `../grej-of-the-day` ligger kvar orört. Användaren bestämmer när det ska arkiveras eller raderas. `.env` följer inte med (ignoreras), användaren kopierar den själv.
+- 2026-11-26 (steg 4): De 22 Jest-felen var testdrift. Koden hade ändrats med flit (commit 6e40edd "Remove complexity", lazy JWT-secret i c7bc7f0, färg-tokens) men testerna hade inte följt med. Testerna ändrades, ingen kod. 2 tester togs bort: `blockDurationMs`-testet i api-utils och `clearError`-testet i userContext (funktionerna finns inte längre). Antal tester: 206 → 204.
+- 2026-11-26 (steg 4): Cypress-jobbet i Actions föll också (3 av 4, grönt senast 2026-02-03). Också testdrift: login-headern har ingen `nav`, dashboarden säger "Välkommen tillbaka, {namn}!" och "Längd/2 veckor" har blivit "Antal lektioner". Specarna är rättade men inte körda lokalt (ingen Postgres/Docker igång). Visas i Actions efter push.
+- 2026-11-26 (steg 4): `test-curriculum.js` togs bort. Det testade kopior av funktionerna (inte `src/lib/curriculum-data.ts`) och hade inga asserts, så det kunde aldrig fallera. Finns kvar i git-historiken.

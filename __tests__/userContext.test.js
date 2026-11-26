@@ -6,18 +6,16 @@ global.fetch = jest.fn();
 
 // Test component to access context
 function TestComponent() {
-  const { user, loading, error, setUser, refreshUser, clearError } = useUser();
+  const { user, loading, setUser, refreshUser } = useUser();
   
   return (
     <div>
       <div data-testid="loading">{loading ? 'true' : 'false'}</div>
-      <div data-testid="error">{error || 'null'}</div>
       <div data-testid="user">{user ? user.email : 'null'}</div>
       <button onClick={() => setUser({ id: '1', email: 'test@example.com', name: 'Test', role: 'user' })}>
         Set User
       </button>
       <button onClick={refreshUser}>Refresh User</button>
-      <button onClick={clearError}>Clear Error</button>
     </div>
   );
 }
@@ -97,7 +95,6 @@ describe('UserContext', () => {
       await waitFor(() => {
         expect(screen.getByTestId('user')).toHaveTextContent('test@example.com');
         expect(screen.getByTestId('loading')).toHaveTextContent('false');
-        expect(screen.getByTestId('error')).toHaveTextContent('null');
       });
 
       expect(fetch).toHaveBeenCalledWith('/api/auth/user', {
@@ -127,7 +124,6 @@ describe('UserContext', () => {
       await waitFor(() => {
         expect(screen.getByTestId('user')).toHaveTextContent('null');
         expect(screen.getByTestId('loading')).toHaveTextContent('false');
-        expect(screen.getByTestId('error')).toHaveTextContent('null');
       });
     });
 
@@ -147,7 +143,6 @@ describe('UserContext', () => {
       await waitFor(() => {
         expect(screen.getByTestId('user')).toHaveTextContent('null');
         expect(screen.getByTestId('loading')).toHaveTextContent('false');
-        expect(screen.getByTestId('error')).toHaveTextContent('null');
       });
     });
 
@@ -170,7 +165,6 @@ describe('UserContext', () => {
       await waitFor(() => {
         expect(screen.getByTestId('user')).toHaveTextContent('null');
         expect(screen.getByTestId('loading')).toHaveTextContent('false');
-        expect(screen.getByTestId('error')).toHaveTextContent('Database connection failed');
       });
     });
 
@@ -193,7 +187,6 @@ describe('UserContext', () => {
       await waitFor(() => {
         expect(screen.getByTestId('user')).toHaveTextContent('null');
         expect(screen.getByTestId('loading')).toHaveTextContent('false');
-        expect(screen.getByTestId('error')).toHaveTextContent('Server error: 500 Internal Server Error');
       });
     });
 
@@ -209,7 +202,6 @@ describe('UserContext', () => {
       await waitFor(() => {
         expect(screen.getByTestId('user')).toHaveTextContent('null');
         expect(screen.getByTestId('loading')).toHaveTextContent('false');
-        expect(screen.getByTestId('error')).toHaveTextContent('Network connection failed');
       });
     });
 
@@ -225,14 +217,13 @@ describe('UserContext', () => {
       await waitFor(() => {
         expect(screen.getByTestId('user')).toHaveTextContent('null');
         expect(screen.getByTestId('loading')).toHaveTextContent('false');
-        expect(screen.getByTestId('error')).toHaveTextContent('Network error occurred');
       });
     });
   });
 
   describe('setUser functionality', () => {
-    it('should set user and clear errors', async () => {
-      // First, set up an error state
+    it('should set user after a failed fetch', async () => {
+      // First, a failed fetch
       fetch.mockResolvedValueOnce({
         ok: false,
         status: 500,
@@ -246,19 +237,19 @@ describe('UserContext', () => {
         </UserProvider>
       );
 
-      // Wait for initial error
+      // Wait for the failed fetch to finish
       await waitFor(() => {
-        expect(screen.getByTestId('error')).toHaveTextContent('Server error');
+        expect(screen.getByTestId('loading')).toHaveTextContent('false');
+        expect(screen.getByTestId('user')).toHaveTextContent('null');
       });
 
-      // Now set a user, which should clear the error
+      // Now set a user manually
       act(() => {
         screen.getByText('Set User').click();
       });
 
       await waitFor(() => {
         expect(screen.getByTestId('user')).toHaveTextContent('test@example.com');
-        expect(screen.getByTestId('error')).toHaveTextContent('null');
       });
     });
 
@@ -341,35 +332,6 @@ describe('UserContext', () => {
       });
 
       expect(fetch).toHaveBeenCalledTimes(2);
-    });
-  });
-
-  describe('clearError functionality', () => {
-    it('should clear error state', async () => {
-      // Set up error state
-      fetch.mockResolvedValueOnce({
-        ok: false,
-        status: 500,
-        statusText: 'Server Error',
-        json: async () => ({ message: 'Test error' })
-      });
-
-      render(
-        <UserProvider>
-          <TestComponent />
-        </UserProvider>
-      );
-
-      await waitFor(() => {
-        expect(screen.getByTestId('error')).toHaveTextContent('Test error');
-      });
-
-      // Clear error
-      act(() => {
-        screen.getByText('Clear Error').click();
-      });
-
-      expect(screen.getByTestId('error')).toHaveTextContent('null');
     });
   });
 

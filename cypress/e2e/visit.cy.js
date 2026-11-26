@@ -3,7 +3,8 @@ describe('Home Page', () => {
     cy.visit('/');
     cy.contains('Skapa Min Första Lektion').should('be.visible').click();
     cy.url().should('include', '/login');
-    cy.get('nav').should('exist');
+    // The login header shows only the logo, no nav
+    cy.get('header').should('exist');
     // Check that we're on the login page
     cy.get('h1').should('contain', 'Skooli');
   });

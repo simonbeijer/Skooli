@@ -13,7 +13,7 @@ describe('Generate Form Validation', () => {
     cy.url().should('include', '/generate');
     
     // Test form validation - button should be disabled initially
-    cy.contains('Generera Lektionsplan').should('have.class', 'cursor-not-allowed');
+    cy.contains('button', 'Generera Lektionsplan').should('be.disabled');
     
     // Fill required fields
     cy.get('input[name="theme"]').type('Skogens Djur');
@@ -24,15 +24,15 @@ describe('Generate Form Validation', () => {
     
     cy.get('input[name="subjects"]').type('Matematik + Svenska');
     
-    // Select duration dropdown
-    cy.contains('label', 'Längd').parent().find('button').click();
-    cy.contains('2 veckor').click();
+    // Select lesson count dropdown
+    cy.contains('label', 'Antal lektioner').parent().find('button').click();
+    cy.contains('2 lektioner').click();
     
     // Optional field
     cy.get('textarea[name="notes"]').type('Fokus på räkna och läsa om djur');
     
     // Button should now be enabled
-    cy.contains('Generera Lektionsplan').should('not.have.class', 'cursor-not-allowed');
+    cy.contains('button', 'Generera Lektionsplan').should('not.be.disabled');
     
     // Test that form data is captured
     cy.get('input[name="theme"]').should('have.value', 'Skogens Djur');

@@ -62,7 +62,7 @@ describe('API Utils', () => {
       expect(ip).toBe('192.168.1.1');
     });
 
-    it('should extract IP from cf-connecting-ip header', async () => {
+    it('should ignore cf-connecting-ip header and fall back to localhost', async () => {
       const { getClientIP } = await import('../src/lib/api/utils.ts');
       
       const mockRequest = {
@@ -75,10 +75,10 @@ describe('API Utils', () => {
       };
 
       const ip = getClientIP(mockRequest);
-      expect(ip).toBe('192.168.1.1');
+      expect(ip).toBe('127.0.0.1');
     });
 
-    it('should extract IP from x-real-ip header', async () => {
+    it('should ignore x-real-ip header and fall back to localhost', async () => {
       const { getClientIP } = await import('../src/lib/api/utils.ts');
       
       const mockRequest = {
@@ -91,7 +91,7 @@ describe('API Utils', () => {
       };
 
       const ip = getClientIP(mockRequest);
-      expect(ip).toBe('192.168.1.1');
+      expect(ip).toBe('127.0.0.1');
     });
 
     it('should fallback to localhost when no headers present', async () => {
@@ -154,12 +154,11 @@ describe('API Utils', () => {
 
       logSecurityEvent('LOGIN_ATTEMPT', { email: 'test@example.com' }, mockRequest, 'user123');
 
-      expect(consoleSpy.warn).toHaveBeenCalledWith('Security Event:', expect.objectContaining({
+      expect(consoleSpy.warn).toHaveBeenCalledWith('Security Event:', {
+        timestamp: expect.any(String),
         event: 'LOGIN_ATTEMPT',
-        details: { email: 'test@example.com' },
-        ip: '192.168.1.1',
         userId: 'user123'
-      }));
+      });
     });
 
     it('should log security event in production mode', async () => {
@@ -239,7 +238,6 @@ describe('API Utils', () => {
 
       expect(result.allowed).toBe(true);
       expect(result.remaining).toBe(5);
-      expect(result.blocked).toBe(false);
     });
 
     it('should track attempts and reduce remaining count', async () => {
@@ -267,25 +265,6 @@ describe('API Utils', () => {
       result = limiter.check('test-user');
       expect(result.remaining).toBe(0);
       expect(result.allowed).toBe(false);
-    });
-
-    it('should block requests when limit exceeded with block duration', async () => {
-      const { RateLimiter } = await import('../src/lib/api/utils.ts');
-      
-      const limiter = new RateLimiter({
-        maxAttempts: 2,
-        windowMs: 60000,
-        blockDurationMs: 30000, // 30 seconds
-      });
-
-      // Exceed limit
-      limiter.recordAttempt('blocked-user');
-      limiter.recordAttempt('blocked-user');
-
-      const result = limiter.check('blocked-user');
-      expect(result.allowed).toBe(false);
-      expect(result.blocked).toBe(true);
-      expect(result.remaining).toBe(0);
     });
 
     it('should clear rate limit data', async () => {
@@ -316,7 +295,7 @@ describe('API Utils', () => {
 
       const result = limiter.check('dev-user');
       expect(result.allowed).toBe(true);
-      expect(result.blocked).toBe(false);
+      expect(result.remaining).toBe(1);
     });
   });
 

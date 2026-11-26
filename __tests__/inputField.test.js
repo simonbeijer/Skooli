@@ -285,7 +285,7 @@ describe('InputField Component', () => {
       expect(input).toHaveClass('border');
       expect(input).toHaveClass('rounded-md');
       expect(input).toHaveClass('focus:ring-2');
-      expect(input).toHaveClass('focus:ring-[#3E8E7E]');
+      expect(input).toHaveClass('focus:ring-primary');
     });
 
     it('should apply custom className', () => {
@@ -299,8 +299,8 @@ describe('InputField Component', () => {
       render(<InputField {...defaultProps} />);
       
       const input = screen.getByRole('textbox');
-      expect(input).toHaveClass('border-[#E6F2F1]');
-      expect(input).toHaveClass('focus:border-[#3E8E7E]');
+      expect(input).toHaveClass('border-muted');
+      expect(input).toHaveClass('focus:border-primary');
     });
   });
 

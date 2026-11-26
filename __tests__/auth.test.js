@@ -60,19 +60,27 @@ describe('Auth Utilities', () => {
     it('should throw error when JWT_SECRET is missing', async () => {
       delete process.env.JWT_SECRET;
       jest.resetModules();
-      
-      await expect(async () => {
-        const { createToken } = await import('../src/lib/auth.ts');
-      }).rejects.toThrow('JWT_SECRET environment variable is required');
+      require('jose').SignJWT.mockImplementation(() => mockSignJWT);
+
+      // The secret is read lazily (so `next build` works without env vars),
+      // so the error comes when a token is created, not on import.
+      const { createToken } = await import('../src/lib/auth.ts');
+      await expect(
+        createToken({ id: '1', email: 'a@b.se', name: 'A', role: 'teacher' })
+      ).rejects.toThrow('JWT_SECRET environment variable is required');
     });
 
     it('should throw error when JWT_SECRET is too short', async () => {
       process.env.JWT_SECRET = 'short';
       jest.resetModules();
-      
-      await expect(async () => {
-        const { createToken } = await import('../src/lib/auth.ts');
-      }).rejects.toThrow('JWT_SECRET must be at least 32 characters long');
+      require('jose').SignJWT.mockImplementation(() => mockSignJWT);
+
+      // The secret is read lazily (so `next build` works without env vars),
+      // so the error comes when a token is created, not on import.
+      const { createToken } = await import('../src/lib/auth.ts');
+      await expect(
+        createToken({ id: '1', email: 'a@b.se', name: 'A', role: 'teacher' })
+      ).rejects.toThrow('JWT_SECRET must be at least 32 characters long');
     });
   });
 

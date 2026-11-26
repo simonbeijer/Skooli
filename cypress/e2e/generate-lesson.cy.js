@@ -11,7 +11,7 @@ describe('Generate Lesson Workflow', () => {
     
     // Step 2: Verify we're on dashboard
     cy.url().should('include', '/dashboard');
-    cy.contains('Välkommen Tillbaka!').should('be.visible');
+    cy.contains('Välkommen tillbaka').should('be.visible');
     
     // Step 3: Navigate to generate lesson page
     cy.contains('Skapa Ny Lektion').click();
@@ -27,9 +27,9 @@ describe('Generate Lesson Workflow', () => {
     
     cy.get('input[name="subjects"]').type('Matematik + Svenska');
     
-    // Select duration (custom dropdown) 
-    cy.contains('label', 'Längd').parent().find('button').click();
-    cy.contains('2 veckor').click();
+    // Select lesson count (custom dropdown)
+    cy.contains('label', 'Antal lektioner').parent().find('button').click();
+    cy.contains('2 lektioner').click();
     
     cy.get('textarea[name="notes"]').type('Fokus på räkna och läsa om djur');
     

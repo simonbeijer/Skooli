@@ -86,20 +86,20 @@ describe('Button Component', () => {
       render(<Button text="Primary" />);
       
       const button = screen.getByRole('button');
-      expect(button).toHaveClass('bg-[#3E8E7E]');
-      expect(button).toHaveClass('hover:bg-[#2d6b5e]');
+      expect(button).toHaveClass('bg-primary');
+      expect(button).toHaveClass('hover:bg-primary-dark');
       expect(button).toHaveClass('text-white');
-      expect(button).toHaveClass('focus:ring-[#3E8E7E]');
+      expect(button).toHaveClass('focus:ring-primary');
     });
 
     it('should apply secondary variant classes', () => {
       render(<Button text="Secondary" variant="secondary" />);
       
       const button = screen.getByRole('button');
-      expect(button).toHaveClass('bg-[#88C9BF]');
-      expect(button).toHaveClass('hover:bg-[#6bb3a8]');
+      expect(button).toHaveClass('bg-secondary');
+      expect(button).toHaveClass('hover:bg-primary-light');
       expect(button).toHaveClass('text-white');
-      expect(button).toHaveClass('focus:ring-[#88C9BF]');
+      expect(button).toHaveClass('focus:ring-secondary');
     });
 
     it('should apply outline variant classes', () => {
@@ -107,10 +107,10 @@ describe('Button Component', () => {
       
       const button = screen.getByRole('button');
       expect(button).toHaveClass('border');
-      expect(button).toHaveClass('border-[#3E8E7E]');
+      expect(button).toHaveClass('border-primary');
       expect(button).toHaveClass('bg-transparent');
-      expect(button).toHaveClass('hover:bg-[#3E8E7E]');
-      expect(button).toHaveClass('text-[#3E8E7E]');
+      expect(button).toHaveClass('hover:bg-primary');
+      expect(button).toHaveClass('text-primary');
       expect(button).toHaveClass('hover:text-white');
     });
 
@@ -119,9 +119,9 @@ describe('Button Component', () => {
       
       const button = screen.getByRole('button');
       expect(button).toHaveClass('bg-transparent');
-      expect(button).toHaveClass('hover:bg-[#3E8E7E]/10');
-      expect(button).toHaveClass('text-[#3E8E7E]');
-      expect(button).toHaveClass('focus:ring-[#3E8E7E]');
+      expect(button).toHaveClass('hover:bg-primary/10');
+      expect(button).toHaveClass('text-primary');
+      expect(button).toHaveClass('focus:ring-primary');
     });
 
     it('should apply danger variant classes', () => {
@@ -280,7 +280,7 @@ describe('Button Component', () => {
       
       const button = screen.getByRole('button');
       expect(button).toHaveClass('inline-flex'); // base
-      expect(button).toHaveClass('bg-[#88C9BF]'); // variant
+      expect(button).toHaveClass('bg-secondary'); // variant
       expect(button).toHaveClass('px-8'); // size
       expect(button).toHaveClass('extra-class'); // custom
     });
@@ -359,7 +359,7 @@ describe('Button Component', () => {
       // Check it renders correctly
       expect(button).toHaveTextContent('Complex button');
       expect(button).toHaveAttribute('type', 'submit');
-      expect(button).toHaveClass('border-[#3E8E7E]'); // outline variant
+      expect(button).toHaveClass('border-primary'); // outline variant
       expect(button).toHaveClass('px-8'); // lg size
       expect(button).toHaveClass('test-class'); // custom class
       expect(button).not.toBeDisabled();
