@@ -1,4 +1,4 @@
-// Typer för content.js (ren JS, kopierad från tools/grej-of-the-day).
+// Typer för content.js (ren JS, från den fristående grej-of-the-day-appen).
 type Log = (line: string) => void;
 
 export declare const STYLES: Record<string, unknown>;

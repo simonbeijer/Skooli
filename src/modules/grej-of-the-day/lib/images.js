@@ -3,7 +3,7 @@
 // Varje bild får samma form:
 // { id, source, title, thumb, full, pageUrl, author, license, width, height }
 
-const UA = "GrejOfTheDay/0.1 (lärarverktyg; kontakt via README)";
+const UA = "Skooli Grej of the Day";
 const PER_SOURCE = 16;
 
 async function getJson(url, headers = {}) {

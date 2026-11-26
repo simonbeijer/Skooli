@@ -23,36 +23,12 @@ jest.mock('next/navigation', () => ({
   usePathname: jest.fn(() => '/dashboard'),
 }));
 
-const ORIGINAL_GOTD_URL = process.env.NEXT_PUBLIC_GOTD_URL;
-
-// NEXT_PUBLIC_GOTD_URL is read at render time (inside the component body),
-// so no jest.resetModules()/re-require is needed between cases.
 import Dashboard from '../src/app/(auth)/dashboard/page';
 
-function renderDashboard() {
-  render(<Dashboard />);
-  const heading = screen.getByRole('heading', { name: 'Grej of the Day' });
-  return heading.closest('a');
-}
-
 describe('Dashboard – Grej of the Day card', () => {
-  afterEach(() => {
-    if (ORIGINAL_GOTD_URL === undefined) {
-      delete process.env.NEXT_PUBLIC_GOTD_URL;
-    } else {
-      process.env.NEXT_PUBLIC_GOTD_URL = ORIGINAL_GOTD_URL;
-    }
-  });
-
-  it('links to http://localhost:3001 when NEXT_PUBLIC_GOTD_URL is unset', () => {
-    delete process.env.NEXT_PUBLIC_GOTD_URL;
-    const link = renderDashboard();
-    expect(link).toHaveAttribute('href', 'http://localhost:3001');
-  });
-
-  it('links to NEXT_PUBLIC_GOTD_URL when it is set', () => {
-    process.env.NEXT_PUBLIC_GOTD_URL = 'https://example.test/gotd';
-    const link = renderDashboard();
-    expect(link).toHaveAttribute('href', 'https://example.test/gotd');
+  it('links to the module page /grej-of-the-day', () => {
+    render(<Dashboard />);
+    const heading = screen.getByRole('heading', { name: 'Grej of the Day' });
+    expect(heading.closest('a')).toHaveAttribute('href', '/grej-of-the-day');
   });
 });

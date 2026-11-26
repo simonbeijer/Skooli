@@ -8,7 +8,7 @@ const API_URL = "https://openrouter.ai/api/v1/chat/completions";
 const MODELS = process.env.GOTD_OPENROUTER_MODEL
   ? [process.env.GOTD_OPENROUTER_MODEL]
   : ["google/gemma-4-31b-it:free", "nvidia/nemotron-3-super-120b-a12b:free", "openrouter/free"];
-const UA = "GrejOfTheDay/0.1 (lärarverktyg; kontakt via README)";
+const UA = "Skooli Grej of the Day";
 const MAX_ARTICLE_CHARS = 12000;
 
 const BASE = `Du hjälper en lärare i årskurs 3 i Sverige att ta fram innehåll till lektionen "Grej of the Day".

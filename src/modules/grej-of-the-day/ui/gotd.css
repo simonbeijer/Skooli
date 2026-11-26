@@ -1,0 +1,286 @@
+/* Grej of the Day – sidans stil. Allt ligger under .gotd så att inget läcker ut i resten av Skooli. */
+.gotd {
+  /* --theme är färgen läraren valt för slidesen. Sidan får samma färgton. */
+  --theme: #9dd679;
+  --green: var(--theme);
+  --green-dark: color-mix(in srgb, var(--theme) 38%, #10140f);
+  --green-soft: color-mix(in srgb, var(--theme) 14%, #fff);
+  --ink: var(--sk-color-text);
+  --muted: #646b62;
+  --faint: #8d948a;
+  --line: var(--sk-color-border);
+  --line-strong: #cfd5cc;
+  --bg: var(--sk-color-bg);
+  --card: var(--sk-color-surface);
+  --red: #b3261e;
+  --red-soft: #fdf0ee;
+  --yellow-soft: #fff6d6;
+  --radius: var(--sk-radius-md);
+  --radius-sm: var(--sk-radius-sm);
+  --ring: 0 0 0 3px color-mix(in srgb, var(--theme) 55%, transparent);
+  --h: 36px; /* höjd på knappar och fält */
+}
+.gotd * { box-sizing: border-box; }
+.gotd [hidden] { display: none !important; }
+.gotd {
+  margin: 0; font-family: var(--sk-font-body); color: var(--ink); font-weight: 400;
+  font-size: 16px; line-height: 1.5; background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+/* Tailwinds preflight nollställer några webbläsarstandarder som sidan byggdes med. Här kommer de tillbaka. */
+.gotd img, .gotd svg { display: inline; vertical-align: baseline; }
+.gotd img { max-width: none; }
+.gotd p { margin: 1em 0; }
+.gotd .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Ikoner */
+.gotd .i { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+/* ---------- Verktygsrad (under Skoolis gemensamma .sk-header) ---------- */
+.gotd .tool-bar {
+  background: rgba(255,255,255,.94); backdrop-filter: blur(8px);
+  border-top: 4px solid var(--theme); border-bottom: 1px solid var(--line);
+  padding: 10px 24px; display: flex; gap: 32px; align-items: center; flex-wrap: wrap;
+  position: sticky; top: 0; z-index: 5;
+}
+.gotd .tool-title { margin: 0; font-family: var(--sk-font-heading); font-size: 18px; font-weight: 600; letter-spacing: -.01em; display: flex; align-items: center; gap: 10px; }
+.gotd .logo { width: 14px; height: 14px; border-radius: 50%; background: var(--theme); box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--theme) 70%, #000); }
+.gotd #steps { display: flex; gap: 4px; }
+.gotd #steps button {
+  background: none; border: 0; border-radius: 999px; height: 34px; padding: 0 14px 0 6px; font: inherit; font-size: 14px;
+  color: var(--muted); display: flex; align-items: center; gap: 8px; white-space: nowrap;
+}
+.gotd #steps button:hover { background: var(--bg); color: var(--ink); }
+.gotd #steps .num {
+  width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 400;
+  background: var(--bg); color: var(--muted); border: 1px solid var(--line-strong);
+}
+.gotd #steps button.active { color: var(--ink); font-weight: 400; background: var(--green-soft); }
+.gotd #steps button.active .num { background: var(--green-dark); border-color: var(--green-dark); color: #fff; }
+
+.gotd-main { max-width: 920px; margin: 0 auto; padding: 28px 16px 96px; }
+.gotd h2 { font-family: var(--sk-font-heading); font-weight: 600; font-size: 24px; letter-spacing: -.015em; margin: 0 0 20px; }
+.gotd h3 { font-weight: 600; font-size: 17px; margin: 0; display: flex; align-items: center; gap: 8px; }
+
+.gotd .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; margin-bottom: 14px; }
+.gotd .narrow { max-width: 600px; margin: 0 auto 16px; }
+
+/* ---------- Fält ---------- */
+.gotd label { display: block; margin-bottom: 14px; font-weight: 400; font-size: 15px; }
+.gotd input, .gotd textarea {
+  width: 100%; font: inherit; font-size: 15px; min-height: var(--h); padding: 7px 12px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+  margin-top: 6px; background: #fff; color: var(--ink); transition: border-color .15s, box-shadow .15s;
+}
+.gotd input::placeholder, .gotd textarea::placeholder { color: var(--faint); }
+.gotd input:focus, .gotd textarea:focus { outline: none; border-color: var(--green-dark); box-shadow: var(--ring); }
+.gotd input:disabled { background: var(--bg); color: var(--muted); }
+.gotd textarea { resize: vertical; line-height: 1.45; }
+
+/* ---------- Knappar: samma höjd, ikon + text ---------- */
+.gotd button { font: inherit; cursor: pointer; }
+.gotd button:disabled { cursor: not-allowed; }
+.gotd button:focus-visible, .gotd a:focus-visible, .gotd summary:focus-visible, .gotd .drop-zone:focus-within, .gotd .color-pick:focus-within { outline: none; box-shadow: var(--ring); }
+.gotd .primary, .gotd .secondary, .gotd .danger, .gotd .icon-btn, .gotd .pick, .gotd .drop {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: var(--h); padding: 0 14px;
+  border-radius: var(--radius-sm); font-size: 14px; font-weight: 400; white-space: nowrap; transition: background .15s, border-color .15s, color .15s, filter .15s;
+}
+.gotd .primary { background: var(--green-dark); color: #fff; border: 1px solid var(--green-dark); }
+.gotd .primary:hover:not(:disabled) { filter: brightness(1.15); }
+.gotd .primary:disabled { opacity: .4; }
+.gotd .actions .primary, .gotd .next .primary { height: 42px; padding: 0 20px; font-size: 15px; }
+.gotd .secondary { background: #fff; border: 1px solid var(--line-strong); color: var(--ink); }
+.gotd .secondary:hover { border-color: var(--green-dark); }
+.gotd .danger { background: #fff; color: var(--red); border: 1px solid color-mix(in srgb, var(--red) 40%, #fff); }
+.gotd .danger:hover { background: var(--red-soft); }
+.gotd .icon-btn { width: var(--h); padding: 0; background: none; border: 1px solid transparent; color: var(--muted); }
+.gotd .icon-btn:hover { background: var(--red-soft); color: var(--red); }
+.gotd .link { background: none; border: 0; color: var(--green-dark); text-decoration: underline; text-underline-offset: 2px; padding: 0; font-size: 14px; }
+
+.gotd .hint { color: var(--muted); font-size: 14px; }
+.gotd .error { color: var(--red); white-space: pre-wrap; background: var(--red-soft); padding: 10px 12px; border-radius: var(--radius-sm); font-size: 14px; margin-top: 16px; }
+.gotd .toolbar { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+.gotd .next { display: flex; justify-content: flex-end; margin-top: 20px; }
+.gotd hr { border: 0; border-top: 1px solid var(--line); margin: 24px 0; }
+
+/* ---------- Steg 1 ---------- */
+.gotd .field { display: block; margin-bottom: 20px; font-weight: 400; }
+.gotd .field-label { display: block; }
+.gotd .optional { color: var(--muted); font-weight: 300; }
+.gotd .actions { display: flex; gap: 10px; align-items: center; margin: 24px 0 6px; }
+.gotd .actions + .hint { margin-top: 16px; }
+.gotd #progress { margin-top: 16px; display: flex; gap: 12px; padding: 12px 14px; background: var(--bg); border-radius: var(--radius-sm); }
+.gotd #log { list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--muted); max-height: 220px; overflow: auto; flex: 1; }
+.gotd #log li + li { margin-top: 2px; }
+.gotd #log li:last-child { color: var(--ink); }
+.gotd .spinner { width: 20px; height: 20px; border: 2.5px solid var(--line); border-top-color: var(--green-dark); border-radius: 50%; animation: gotd-spin .9s linear infinite; flex: none; }
+.gotd .spinner.small { width: 15px; height: 15px; border-width: 2px; }
+@keyframes gotd-spin { to { transform: rotate(360deg); } }
+
+.gotd .color-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+.gotd .color-pick { position: relative; width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; box-shadow: 0 0 0 3px #fff, 0 0 0 4px var(--line-strong); margin: 0; flex: none; }
+.gotd .color-pick:hover { box-shadow: 0 0 0 3px #fff, 0 0 0 4px var(--green-dark); }
+.gotd .color-pick input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; margin: 0; padding: 0; }
+.gotd .color-pick span { background: rgba(255,255,255,.9); border-radius: 999px; padding: 1px 7px; font-size: 11px; font-weight: 400; white-space: nowrap; pointer-events: none; }
+.gotd .slide-preview { aspect-ratio: 16 / 9; width: 180px; border-radius: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 4px 14px rgba(0,0,0,.08); text-align: center; padding: 10px; }
+.gotd .slide-preview strong { font-size: 16px; font-weight: 600; }
+.gotd .slide-preview span { font-size: 10px; opacity: .75; }
+.gotd .warn { color: #7a5a00; background: var(--yellow-soft); padding: 8px 12px; border-radius: var(--radius-sm); }
+
+/* ---------- Steg 2: granska ---------- */
+.gotd #approve-count { font-weight: 600; }
+.gotd .section-head { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+.gotd .section-head input { font-weight: 600; font-size: 17px; flex: 1; min-width: 200px; margin: 0; border-color: transparent; padding-left: 0; }
+.gotd .section-head input:hover { border-color: var(--line); padding-left: 12px; }
+.gotd .section-head input:focus { padding-left: 12px; }
+.gotd .card > input[data-field] { margin: 0; }
+.gotd .tag { font-size: 12px; background: var(--bg); color: var(--muted); border-radius: 999px; padding: 2px 10px; font-weight: 400; white-space: nowrap; }
+.gotd .tag.new { background: #fff1c2; color: #7a5a00; }
+
+.gotd .item {
+  border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 8px; background: #fff;
+  transition: background .15s, border-color .15s;
+}
+.gotd .item.approved { border-color: color-mix(in srgb, var(--green-dark) 30%, #fff); background: var(--green-soft); box-shadow: inset 3px 0 0 var(--green-dark); }
+.gotd .item.invalid { border-color: color-mix(in srgb, var(--red) 25%, #fff); box-shadow: inset 3px 0 0 var(--red); }
+.gotd .item textarea, .gotd .item input[data-act=text] { margin: 0 0 0 -6px; width: calc(100% + 12px); border-color: transparent; background: transparent; padding: 4px 6px; min-height: 0; }
+.gotd .item textarea { field-sizing: content; min-height: 2.2em; resize: none; }
+.gotd .item textarea:hover, .gotd .item input[data-act=text]:hover { border-color: var(--line); background: #fff; }
+.gotd .item textarea:focus, .gotd .item input[data-act=text]:focus { background: #fff; }
+.gotd .item:not(.approved) textarea, .gotd .item:not(.approved) input[data-act=text] { color: #4a5148; }
+.gotd .item-row { display: flex; gap: 10px; align-items: center; }
+.gotd .film { flex: 1; display: inline-flex; align-items: center; gap: 8px; color: var(--green-dark); }
+
+/* Ta med / Ta bort till vänster, källor tyst till höger */
+.gotd .item-foot { display: flex; justify-content: space-between; align-items: center; gap: 6px 12px; flex-wrap: wrap; margin-top: 8px; }
+.gotd .choice { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+.gotd .item > .choice { margin-top: 8px; }
+.gotd .pick, .gotd .drop { height: 30px; padding: 0 12px; border-radius: 999px; font-size: 13px; }
+.gotd .pick { border: 1px solid var(--green-dark); color: var(--green-dark); background: #fff; }
+.gotd .pick:hover { background: var(--green-soft); }
+.gotd .pick.on { background: var(--green-dark); color: #fff; }
+.gotd .drop { border: 1px solid transparent; color: var(--muted); background: none; }
+.gotd .drop:hover { color: var(--red); background: var(--red-soft); }
+.gotd .choice .tag { margin-left: 4px; }
+.gotd .keywords { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 8px; }
+.gotd .keywords .item { margin: 0; }
+
+.gotd .refs { display: flex; align-items: center; gap: 2px 8px; flex-wrap: wrap; font-size: 12.5px; color: var(--faint); margin-left: auto; }
+.gotd .ref { display: inline-flex; align-items: center; max-width: 240px; }
+.gotd .ref a { display: inline-flex; align-items: center; gap: 4px; color: var(--faint); text-decoration: none; min-width: 0; border-radius: 4px; }
+.gotd .ref a span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gotd .ref a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; }
+.gotd .ref .i, .gotd .add-source .i, .gotd .missing .i { width: 13px; height: 13px; }
+.gotd .ref-x { background: none; border: 0; padding: 2px; margin-left: 1px; color: var(--faint); border-radius: 4px; display: inline-grid; opacity: 0; }
+.gotd .ref:hover .ref-x, .gotd .ref-x:focus-visible { opacity: 1; }
+.gotd .ref-x:hover { color: var(--red); }
+@media (hover: none) { .gotd .ref-x { opacity: 1; } }
+.gotd .missing { display: inline-flex; align-items: center; gap: 4px; color: var(--red); }
+.gotd details.add-source { position: relative; }
+.gotd details.add-source summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 3px; color: var(--faint); border-radius: 4px; padding: 1px 4px; }
+.gotd details.add-source summary::-webkit-details-marker { display: none; }
+.gotd details.add-source summary:hover, .gotd details.add-source[open] summary { color: var(--ink); background: var(--bg); }
+.gotd details.add-source .row {
+  position: absolute; right: 0; top: calc(100% + 6px); z-index: 3; width: min(340px, 80vw); display: flex; gap: 6px; padding: 8px;
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius-sm); box-shadow: 0 8px 24px rgba(20,24,19,.12);
+}
+.gotd details.add-source input { margin: 0; font-size: 13px; min-height: 32px; padding: 4px 8px; }
+.gotd details.add-source .secondary { height: 32px; font-size: 13px; padding: 0 10px; }
+
+/* AI-panelen: stil, önskemål, en tydlig knapp */
+.gotd .more { border-radius: var(--radius-sm); padding: 14px; margin-top: 14px; background: var(--bg); }
+.gotd .more-head { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 400; margin-bottom: 12px; }
+.gotd .more-head .i { color: var(--green-dark); }
+.gotd .more-grid { display: grid; grid-template-columns: max-content 1fr; gap: 10px 14px; align-items: center; }
+.gotd .more-label { font-size: 13px; color: var(--muted); margin: 0; font-weight: 300; }
+.gotd .more-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.gotd .more-row input { flex: 1; min-width: 180px; margin: 0; }
+.gotd .seg { display: inline-flex; gap: 2px; padding: 3px; background: #e8ece6; border-radius: 10px; justify-self: start; flex-wrap: wrap; }
+.gotd .seg-btn { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border: 0; border-radius: 7px; background: none; color: var(--muted); font-size: 13px; }
+.gotd .seg-btn:hover:not(:disabled) { color: var(--ink); }
+.gotd .seg-btn.on { background: #fff; color: var(--ink); font-weight: 400; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+.gotd .seg-btn.on .i { color: var(--green-dark); }
+.gotd .seg-btn:disabled { opacity: .6; }
+.gotd .more-status { display: flex; gap: 8px; align-items: center; margin-top: 12px; font-size: 14px; color: var(--muted); }
+.gotd .more-status .link { margin-left: 8px; }
+.gotd .more .error { margin: 12px 0 0; }
+.gotd .more .hint { margin: 12px 0 0; }
+.gotd .new-section { border-style: dashed; border-color: var(--line-strong); background: transparent; }
+.gotd .new-section .more { background: #fff; margin-top: 0; }
+
+/* ---------- Steg 3: bilder ---------- */
+.gotd .slot-head { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+.gotd .search-row { display: flex; gap: 8px; margin: 12px 0; flex-wrap: wrap; }
+.gotd .search-row input { flex: 1; min-width: 200px; margin: 0; }
+.gotd .chosen { display: flex; gap: 10px; flex-wrap: wrap; min-height: 20px; margin-top: 12px; }
+.gotd .chosen figure { margin: 0; position: relative; }
+.gotd .chosen img { height: 84px; border-radius: var(--radius-sm); outline: 3px solid var(--green-dark); outline-offset: -3px; display: block; }
+.gotd .chosen img.broken { width: 84px; background: var(--line); }
+.gotd .chosen button { position: absolute; top: -7px; right: -7px; border-radius: 50%; width: 22px; height: 22px; border: 2px solid #fff; background: var(--ink); color: #fff; padding: 0; display: grid; place-items: center; }
+.gotd .chosen button .i { width: 12px; height: 12px; stroke-width: 2.5; }
+.gotd .chosen button:hover { background: var(--red); }
+.gotd .results-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0 10px; }
+.gotd .results-tabs button { border: 1px solid var(--line); background: #fff; border-radius: 999px; height: 28px; padding: 0 11px; font-size: 13px; color: var(--muted); }
+.gotd .results-tabs button:hover { color: var(--ink); }
+.gotd .results-tabs button.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+.gotd .results-tabs .err { color: var(--red); }
+.gotd .results-tabs button.active .err { color: #ffb4ab; }
+.gotd .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+.gotd .thumb { position: relative; border-radius: var(--radius-sm); overflow: hidden; border: 0; cursor: pointer; background: #e9ece7; aspect-ratio: 4/3; padding: 0; }
+.gotd .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .2s; }
+.gotd .thumb:hover img { transform: scale(1.04); }
+.gotd .thumb.selected { outline: 3px solid var(--green-dark); outline-offset: -3px; }
+.gotd .thumb.selected::after { content: "✓"; position: absolute; top: 6px; right: 6px; background: var(--green-dark); color: #fff; border-radius: 50%; width: 22px; height: 22px; display: grid; place-items: center; font-size: 13px; }
+.gotd .thumb .src { position: absolute; left: 0; right: 0; bottom: 0; font-size: 11px; background: linear-gradient(transparent, rgba(0,0,0,.6)); color: #fff; padding: 12px 7px 4px; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gotd .thumb .zoom { position: absolute; top: 6px; left: 6px; width: 26px; height: 26px; display: grid; place-items: center; background: rgba(255,255,255,.92); color: var(--ink); border-radius: 7px; opacity: 0; transition: opacity .15s; }
+.gotd .thumb:hover .zoom, .gotd .thumb:focus-visible .zoom { opacity: 1; }
+@media (hover: none) { .gotd .thumb .zoom { opacity: 1; } }
+.gotd .thumb .used { position: absolute; top: 6px; right: 6px; max-width: 75%; background: #fff1c2; color: #7a5a00; border-radius: 6px; font-size: 10px; padding: 1px 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Egen bild: dra och släpp, eller länk */
+.gotd .own { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); display: grid; gap: 8px; }
+.gotd .drop-zone {
+  display: flex; align-items: center; justify-content: center; gap: 10px; margin: 0; padding: 16px; text-align: center;
+  border: 1.5px dashed var(--line-strong); border-radius: var(--radius-sm); color: var(--muted); font-size: 14px; font-weight: 300; cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.gotd .drop-zone b { font-weight: 400; color: var(--ink); }
+.gotd .drop-zone .i { width: 20px; height: 20px; }
+.gotd .drop-zone:hover, .gotd .dragging .drop-zone { border-color: var(--green-dark); background: var(--green-soft); color: var(--ink); }
+.gotd .card.dragging { border-color: var(--green-dark); }
+.gotd .own-url { display: flex; gap: 8px; }
+.gotd .own-url input { flex: 1; margin: 0; }
+
+.gotd dialog { border: 0; border-radius: var(--radius); max-width: min(900px, 95vw); padding: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+.gotd dialog::backdrop { background: rgba(20,24,19,.55); }
+.gotd dialog img { max-width: 100%; max-height: 70vh; display: block; margin: 0 auto; border-radius: var(--radius-sm); }
+.gotd dialog p { font-size: 13px; color: var(--muted); word-break: break-all; }
+.gotd dialog form { display: flex; justify-content: flex-end; }
+.gotd dialog form button { background: var(--ink); color: #fff; border: 0; border-radius: var(--radius-sm); height: var(--h); padding: 0 16px; font-size: 14px; }
+
+/* ---------- Steg 4 ---------- */
+.gotd #checklist { margin-bottom: 8px; }
+.gotd #checklist ul { padding: 0; list-style: none; margin: 0; }
+.gotd #checklist li { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+.gotd #checklist li:last-child { border-bottom: 0; }
+.gotd #checklist li.ok { color: var(--green-dark); }
+.gotd #checklist li.bad { color: var(--red); }
+.gotd #checklist li.info { color: var(--muted); }
+.gotd #checklist .link { margin-top: 8px; }
+
+@media (max-width: 640px) {
+  .gotd .tool-bar { padding: 8px 16px; gap: 6px; }
+  .gotd #steps { overflow-x: auto; width: 100%; }
+  .gotd #steps button { padding: 0 10px 0 4px; font-size: 13px; flex: none; }
+  .gotd-main { padding-top: 20px; }
+  .gotd .card { padding: 16px; }
+  .gotd .more-grid { grid-template-columns: 1fr; gap: 6px; }
+  .gotd .more-label { margin-top: 4px; }
+  .gotd .refs { margin-left: 0; }
+  .gotd .seg { flex-wrap: nowrap; max-width: 100%; }
+  .gotd .seg-btn { padding: 0 9px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gotd *, .gotd *::before, .gotd *::after { transition: none !important; }
+  .gotd .spinner { animation-duration: 2.5s; }
+}

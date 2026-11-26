@@ -1,7 +1,9 @@
-// Grej of the Day – gränssnitt.
+// Grej of the Day – gränssnitt (ren JS som styr DOM:en direkt).
+// mountGotd(root) fyller root med sidans HTML, kopplar på allt och returnerar en städfunktion.
 // Allt sparas i webbläsaren (localStorage) så att inget försvinner om sidan laddas om.
 
-const $ = (sel, el = document) => el.querySelector(sel);
+import { MARKUP } from "./markup.js";
+
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const STORE = "gotd-state-v1";
 const DEFAULT_COLOR = "#9DD679";
@@ -31,6 +33,13 @@ const ICONS = {
   play: '<circle cx="12" cy="12" r="9"/><path d="m10 8.5 5 3.5-5 3.5z"/>',
 };
 const icon = (name) => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>`;
+
+export function mountGotd(root) {
+root.innerHTML = MARKUP;
+
+const $ = (sel, el = root) => el.querySelector(sel);
+let disposed = false; // sätts när sidan lämnas, så att inget som väntar på servern rör DOM:en efteråt
+const toLogin = () => { window.location.href = "/login"; };
 
 let state = migrate(load()) || { step: 1, content: null, images: {}, queries: {}, color: DEFAULT_COLOR };
 const results = {}; // bildsökresultat per slot (sparas inte)
@@ -63,7 +72,7 @@ function migrate(s) {
 // ---------- Färg ----------
 
 function applyColor() {
-  document.documentElement.style.setProperty("--theme", state.color);
+  root.style.setProperty("--theme", state.color);
 }
 
 function isDark(hex) {
@@ -103,16 +112,16 @@ function goto(step) {
   if (step > 1 && !state.content) step = 1;
   state.step = step;
   save();
-  document.querySelectorAll(".step").forEach((s) => (s.hidden = s.id !== `step-${step}`));
-  document.querySelectorAll("#steps button").forEach((b) => b.classList.toggle("active", Number(b.dataset.step) === step));
+  root.querySelectorAll(".step").forEach((s) => (s.hidden = s.id !== `step-${step}`));
+  root.querySelectorAll("#steps button").forEach((b) => b.classList.toggle("active", Number(b.dataset.step) === step));
   if (step === 2) renderReview();
   if (step === 3) renderSlots();
   if (step === 1) renderColors();
   if (step === 4) renderChecklist();
   window.scrollTo(0, 0);
 }
-document.querySelectorAll("[data-step]").forEach((b) => b.addEventListener("click", () => goto(Number(b.dataset.step))));
-document.querySelectorAll("[data-goto]").forEach((b) => b.addEventListener("click", () => goto(Number(b.dataset.goto))));
+root.querySelectorAll("[data-step]").forEach((b) => b.addEventListener("click", () => goto(Number(b.dataset.step))));
+root.querySelectorAll("[data-goto]").forEach((b) => b.addEventListener("click", () => goto(Number(b.dataset.goto))));
 
 // ---------- Jobb på servern ----------
 
@@ -125,21 +134,26 @@ async function runJob(url, body, onLog, ctl = {}) {
   let id;
   ctl.cancel = () => {
     cancelled = true;
-    if (id) fetch(`/api/jobs/${id}`, { method: "DELETE" }).catch(() => {});
+    if (id) fetch(`/api/grej-of-the-day/jobs/${id}`, { method: "DELETE" }).catch(() => {});
   };
   const res = await fetch(url, post(body));
-  const started = await res.json().catch(() => ({ error: `Servern svarade inte som väntat (${res.status}). Starta om den med npm start och försök igen.` }));
+  if (res.status === 401) { toLogin(); throw new Error("Avbruten"); }
+  const started = await res.json().catch(() => ({ error: `Servern svarade inte som väntat (${res.status}). Starta om Skooli (npm run dev) och försök igen.` }));
   if (started.error) throw new Error(started.error);
   id = started.id;
-  if (cancelled) ctl.cancel();
+  if (cancelled || disposed) ctl.cancel(); // svar efter avbrott eller unmount: ta bort jobbet på servern
+  if (disposed) throw new Error("Avbruten");
   let job;
   do {
     await new Promise((r) => setTimeout(r, 1500));
-    if (cancelled) throw new Error("Avbruten");
-    const r = await fetch(`/api/jobs/${id}`);
+    if (cancelled || disposed) throw new Error("Avbruten");
+    const r = await fetch(`/api/grej-of-the-day/jobs/${id}`);
+    if (disposed) throw new Error("Avbruten");
+    if (r.status === 401) { toLogin(); throw new Error("Avbruten"); }
     // Jobben finns bara i serverns minne. Startas servern om försvinner pågående jobb.
     if (r.status === 404) throw new Error("Servern startades om medan AI:n arbetade, så arbetet försvann. Försök igen.");
     job = await r.json();
+    if (disposed) throw new Error("Avbruten");
     onLog(job.log || []);
   } while (job.status === "running");
   if (cancelled) throw new Error("Avbruten");
@@ -160,22 +174,26 @@ $("#generate").addEventListener("click", async () => {
   $("#progress").hidden = false;
   $("#log").innerHTML = "";
   try {
-    const result = await runJob("/api/generate", { topic, notes: $("#notes").value }, (log) => {
+    const result = await runJob("/api/grej-of-the-day/generate", { topic, notes: $("#notes").value }, (log) => {
       $("#log").innerHTML = log.map((l) => `<li>${esc(l)}</li>`).join("");
       $("#log").scrollTop = 1e6;
     }, genCtl);
+    if (disposed) return;
     state = { ...state, step: 2, content: prepare(result), images: {}, queries: {} };
     save();
     goto(2);
   } catch (e) {
+    if (disposed) return;
     if (e.message !== "Avbruten") {
       $("#gen-error").textContent = e.message;
       $("#gen-error").hidden = false;
     }
   } finally {
-    btn.disabled = false;
-    $("#cancel-generate").hidden = true;
-    $("#progress").hidden = true;
+    if (!disposed) {
+      btn.disabled = false;
+      $("#cancel-generate").hidden = true;
+      $("#progress").hidden = true;
+    }
   }
 });
 
@@ -436,13 +454,13 @@ async function askMore(key, style) {
   Object.assign(m, { running: true, status: "Startar … (tar ofta en minut)" });
   renderReview();
   try {
-    const r = await runJob("/api/more", body, (log) => {
+    const r = await runJob("/api/grej-of-the-day/more", body, (log) => {
       if (m.ctl !== ctl) return;
       m.status = log.at(-1) || m.status;
       const s = $(`[data-more="${key}"] [data-status]`);
       if (s) s.textContent = m.status;
     }, ctl);
-    if (state.content !== c || m.ctl !== ctl) return; // läraren har börjat om eller sökt på nytt
+    if (disposed || state.content !== c || m.ctl !== ctl) return; // läraren har börjat om eller sökt på nytt
     const count = r.forslag?.length ?? r.avsnitt?.punkter.length;
     const fresh = (f) => ({ ...f, approved: false, isNew: true });
     if (key === "ledtradar") c.ledtradar.push(...r.forslag.map(fresh));
@@ -453,10 +471,10 @@ async function askMore(key, style) {
     m.info = key === "nytt-avsnitt" ? "Ny slide tillagd ovanför." : `${count} nya förslag tillagda ovanför (märkta "nytt förslag").`;
     save();
   } catch (e) {
-    if (m.ctl !== ctl) return;
+    if (disposed || m.ctl !== ctl) return;
     if (e.message !== "Avbruten") m.error = e.message;
   } finally {
-    if (m.ctl === ctl) {
+    if (!disposed && m.ctl === ctl) {
       m.running = false;
       m.ctl = null;
       if (state.step === 2) renderReview();
@@ -571,7 +589,7 @@ $("#review").addEventListener("click", (e) => {
 // ---------- Steg 3: bilder ----------
 
 // Bilder från nätet går via servern, som hämtar några åt gången (annars blockerar t.ex. Wikimedia).
-const imgSrc = (u) => (!u || u.startsWith("data:") ? u : `/api/thumb?u=${encodeURIComponent(u)}`);
+const imgSrc = (u) => (!u || u.startsWith("data:") ? u : `/api/grej-of-the-day/thumb?u=${encodeURIComponent(u)}`);
 
 // Varje bildruta får egna sökord, så att samma sökning inte står på flera ställen.
 function slotDefs() {
@@ -612,10 +630,18 @@ function usedElsewhere(slot) {
 }
 
 async function renderSlots() {
-  const sources = await (await fetch("/api/image-sources")).json().catch(() => []);
-  const on = sources.filter((s) => s.enabled).map((s) => s.label);
-  const off = sources.filter((s) => !s.enabled).map((s) => s.label);
-  $("#source-status").textContent = `Söker i: ${on.join(", ")}.` + (off.length ? ` Fler källor (${off.join(", ")}) kan slås på med gratis API-nycklar, se README.` : "");
+  const res = await fetch("/api/grej-of-the-day/image-sources").catch(() => null);
+  if (disposed) return;
+  if (res?.status === 401) return toLogin();
+  const data = res ? await res.json().catch(() => null) : null;
+  if (disposed) return;
+  if (res?.ok && Array.isArray(data)) {
+    const on = data.filter((s) => s.enabled).map((s) => s.label);
+    const off = data.filter((s) => !s.enabled).map((s) => s.label);
+    $("#source-status").textContent = `Söker i: ${on.join(", ")}.` + (off.length ? ` Fler källor (${off.join(", ")}) kan slås på med gratis API-nycklar, se .env.example.` : "");
+  } else {
+    $("#source-status").textContent = data?.error || `Kunde inte hämta bildkällorna (${res ? res.status : "inget svar"}).`;
+  }
 
   $("#slots").innerHTML = slotDefs().map((s) => {
     state.queries[s.id] ??= s.q;
@@ -641,7 +667,7 @@ async function renderSlots() {
       </div>
     </div>`;
   }).join("");
-  document.querySelectorAll("[data-slot]").forEach((card) => {
+  root.querySelectorAll("[data-slot]").forEach((card) => {
     renderChosen(card);
     renderResults(card);
   });
@@ -660,6 +686,7 @@ function renderResults(card) {
   const el = $(".results", card);
   if (!r) return (el.innerHTML = "");
   if (r.loading) return (el.innerHTML = `<div class="spinner"></div>`);
+  if (r.error) return (el.innerHTML = `<p class="error">${esc(r.error)}</p>`);
   const groups = r.groups;
   const active = r.active;
   const visible = active === "alla" ? groups.flatMap((g) => g.images) : groups.find((g) => g.source === active)?.images || [];
@@ -690,8 +717,13 @@ async function search(card) {
   save();
   results[slot] = { loading: true };
   renderResults(card);
-  const groups = await (await fetch(`/api/images?q=${encodeURIComponent(q)}`)).json();
-  results[slot] = { groups, active: "alla" };
+  const res = await fetch(`/api/grej-of-the-day/images?q=${encodeURIComponent(q)}`).catch(() => null);
+  if (disposed) return;
+  if (res?.status === 401) return toLogin();
+  const groups = res ? await res.json().catch(() => null) : null;
+  if (disposed) return;
+  if (res?.ok && Array.isArray(groups)) results[slot] = { groups, active: "alla" };
+  else results[slot] = { error: groups?.error || `Bildsökningen misslyckades (${res ? res.status : "inget svar"}).` };
   renderResults(card);
 }
 
@@ -707,7 +739,7 @@ function pick(card, img) {
   else if (list.length >= Number(card.dataset.max)) return alert(`Max ${card.dataset.max} bilder här.`);
   else list.push(img);
   save();
-  document.querySelectorAll("[data-slot]").forEach((c) => { renderChosen(c); renderResults(c); });
+  root.querySelectorAll("[data-slot]").forEach((c) => { renderChosen(c); renderResults(c); });
 }
 
 $("#slots").addEventListener("click", (e) => {
@@ -778,8 +810,9 @@ $("#slots").addEventListener("drop", (e) => {
   addOwnFile(card, e.dataTransfer.files[0]);
 });
 // En bild som släpps bredvid en bildruta ska inte öppnas i webbläsaren och lämna sidan.
-window.addEventListener("dragover", (e) => hasFiles(e) && e.preventDefault());
-window.addEventListener("drop", (e) => hasFiles(e) && e.preventDefault());
+const blockFileDrop = (e) => hasFiles(e) && e.preventDefault();
+window.addEventListener("dragover", blockFileDrop);
+window.addEventListener("drop", blockFileDrop);
 
 // ---------- Steg 4: export ----------
 
@@ -831,7 +864,7 @@ $("#export").addEventListener("click", async () => {
   btn.textContent = "Skapar presentationen …";
   $("#export-error").hidden = true;
   try {
-    const res = await fetch("/api/export", post(exportData()));
+    const res = await fetch("/api/grej-of-the-day/export", post(exportData()));
     if (!res.ok) throw new Error((await res.json()).error);
     const blob = await res.blob();
     const a = document.createElement("a");
@@ -840,11 +873,14 @@ $("#export").addEventListener("click", async () => {
     a.click();
     URL.revokeObjectURL(a.href);
   } catch (e) {
+    if (disposed) return;
     $("#export-error").textContent = "Något gick fel: " + e.message;
     $("#export-error").hidden = false;
   } finally {
-    btn.disabled = false;
-    btn.textContent = "Ladda ner .pptx";
+    if (!disposed) {
+      btn.disabled = false;
+      btn.textContent = "Ladda ner .pptx";
+    }
   }
 });
 
@@ -859,3 +895,13 @@ $("#reset").addEventListener("click", () => {
 
 applyColor();
 goto(state.step || 1);
+
+return () => {
+  disposed = true;
+  genCtl.cancel?.(); // avbryter jobbet på servern (DELETE) och stoppar pollningen
+  Object.values(more).forEach((m) => m.ctl?.cancel?.());
+  window.removeEventListener("dragover", blockFileDrop);
+  window.removeEventListener("drop", blockFileDrop);
+  root.innerHTML = "";
+};
+}

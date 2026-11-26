@@ -1,30 +1,5 @@
-<!doctype html>
-<html lang="sv">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Grej of the Day</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="stylesheet" href="theme.css" />
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header class="sk-header">
-    <div class="sk-header__inner">
-      <a class="sk-header__brand" href="{{SKOOLI_URL}}/dashboard">
-        <span class="sk-header__logo">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-          </svg>
-        </span>
-        <span class="sk-header__name">Skooli</span>
-      </a>
-      <div class="sk-header__actions">
-        <a class="sk-header__link" href="{{SKOOLI_URL}}/dashboard">← Tillbaka till Skooli</a>
-      </div>
-    </div>
-  </header>
-
+// Sidans HTML (förut public/index.html i den fristående appen, utan egen header).
+export const MARKUP = `
   <div class="tool-bar">
     <h1 class="tool-title"><span class="logo"></span>Grej of the Day</h1>
     <nav id="steps" aria-label="Steg">
@@ -35,7 +10,7 @@
     </nav>
   </div>
 
-  <main>
+  <div class="gotd-main">
     <!-- Steg 1 -->
     <section id="step-1" class="step">
       <div class="card narrow">
@@ -95,7 +70,7 @@
         <button id="reset" class="danger">Börja om med en ny grej</button>
       </div>
     </section>
-  </main>
+  </div>
 
   <dialog id="img-dialog">
     <img id="img-dialog-img" alt="" />
@@ -103,6 +78,4 @@
     <form method="dialog"><button>Stäng</button></form>
   </dialog>
 
-  <script src="app.js" type="module"></script>
-</body>
-</html>
+`;

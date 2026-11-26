@@ -2,6 +2,8 @@
 
 Status: förslag, inget är byggt. Skrivet 2026-10-16.
 
+Inaktuellt sedan 2026-11-26: Grej of the Day är nu en modul inne i Skooli (se PLAN.md), så ingen inloggning behöver delas mellan appar.
+
 ## 1. Nuläge
 
 Skooli har en egen, enkel inloggning:

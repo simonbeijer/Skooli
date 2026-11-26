@@ -1,4 +1,4 @@
-// Typer för images.js (ren JS, kopierad från tools/grej-of-the-day).
+// Typer för images.js (ren JS, från den fristående grej-of-the-day-appen).
 export interface ImageSource {
   id: string;
   label: string;
