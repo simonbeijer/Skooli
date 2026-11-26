@@ -2,7 +2,7 @@ describe('Generate Form Validation', () => {
   it('should validate form fields and enable submit button when filled', () => {
     // Login first
     cy.visit('/');
-    cy.contains('Skapa Min Första Lektion').click();
+    cy.contains('Utforska Verktygen').click();
     cy.get('input[name="email"]').type('user@example.com');
     cy.get('input[name="password"]').type('Password123');
     cy.get('button[type="submit"]').click();

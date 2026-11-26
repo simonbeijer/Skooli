@@ -13,7 +13,7 @@ Skooli är plattformen och står för inloggning, header, utseende och en enkel 
 | 5 | Gör lektionsplaneraren till en modul. Välj en mappstruktur för moduler och skriv den under "Val". Senare steg följer den. Dashboarden blir en enkel meny med modulerna | Agent | Lektionsplaneringen fungerar som förut efter inloggning, och alla tester och bygget är gröna | Klart (Jest 204/204, lint rent, build grönt) |
 | 6 | Grej of the Day, del 1. `lib/` och Express-routes blir modulens logik och route handlers. `pptxgenjs` och `image-size` läggs till i Skoolis `package.json`. Testerna flyttas med | Agent | API:t fungerar bakom inloggningen och testerna är gröna | Klart (Jest 209/209, lint rent, build grönt) |
 | 7 | Grej of the Day, del 2. Sidan blir modulens sida bakom inloggningen, menyn pekar på den, och `tools/` tas bort | Agent | Grej of the Day fungerar inne i Skooli, och alla tester och bygget är gröna | Klart (Jest 213/213, lint rent, build grönt). Inte provad inloggad i webbläsare |
-| 8 | Driftsättning | Användaren | | Ej påbörjat |
+| 8 | Driftsättning | Användaren | | Klart |
 
 **Användarens egna steg:** driftsättning (steg 8), commits och push.
 

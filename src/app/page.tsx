@@ -2,8 +2,10 @@ import Link from "next/link";
 import Image from "next/image";
 import Button from "./components/button";
 import Header from "./components/header";
+import { getModules } from "@/modules/modules";
 
 export default function Home() {
+  const modules = getModules();
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden">
         {/* Abstract Background Shapes */}
@@ -31,46 +33,34 @@ export default function Home() {
           <div className="space-y-8 order-1 lg:order-2">
             <div className="space-y-6">
               <h1 className="text-5xl lg:text-6xl font-playfair font-bold text-foreground leading-tight">
-                Skapa Lektionsplaner på 
-                <span className="text-primary"> 30 Sekunder</span>
+                Verktyg som gör
+                <span className="text-primary"> Lärardagen Lättare</span>
               </h1>
               <p className="text-xl text-grey leading-relaxed">
-                Sluta spendera 3-5 timmar varje vecka på att skapa lektionsplaner. 
-                Vår AI följer Läroplanen och skapar kompletta planer på några sekunder.
+                Skooli samlar AI-verktyg för lärare på ett ställe. Logga in en gång
+                och planera lektioner eller bygg presentationer på några sekunder.
               </p>
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-center space-x-4">
-                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                  <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
+              {modules.map((module) => (
+                <div key={module.id} className="flex items-center space-x-4">
+                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+                    <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <span className="text-grey text-lg">
+                    <span className="font-semibold text-foreground">{module.title}</span> – {module.description}
+                  </span>
                 </div>
-                <span className="text-grey text-lg">Följer officiella Läroplanen</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                  <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <span className="text-grey text-lg">Sparar 5 timmar per vecka</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                  <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 919.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                </div>
-                <span className="text-grey text-lg">Anpassat för alla årskurser</span>
-              </div>
+              ))}
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <Link href="/login">
                 <Button 
-                  text="Skapa Min Första Lektion"
+                  text="Utforska Verktygen"
                   variant="primary"
                   size="lg"
                   className="px-8 py-3 rounded-xl"
@@ -102,8 +92,8 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-foreground">Fyll i Formulär</h3>
-              <p className="text-grey">Tema, årskurs, ämnen och längd</p>
+              <h3 className="text-xl font-semibold text-foreground">Logga In</h3>
+              <p className="text-grey">Ett konto för alla verktyg</p>
             </div>
             
             <div className="text-center space-y-6">
@@ -112,8 +102,8 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-foreground">AI Genererar</h3>
-              <p className="text-grey">30 sekunder med Läroplanen som grund</p>
+              <h3 className="text-xl font-semibold text-foreground">Välj Verktyg</h3>
+              <p className="text-grey">Lektionsplan eller veckans grej – AI gör jobbet</p>
             </div>
             
             <div className="text-center space-y-6">
@@ -122,8 +112,8 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-foreground">Kopiera & Använd</h3>
-              <p className="text-grey">Redigera och anpassa efter behov</p>
+              <h3 className="text-xl font-semibold text-foreground">Använd Direkt</h3>
+              <p className="text-grey">Anpassa planen eller öppna presentationen i klassrummet</p>
             </div>
           </div>
         </div>

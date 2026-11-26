@@ -31,7 +31,7 @@ describe('Home Page', () => {
         <Home />
       </UserProvider>
     );
-    const getStartedLink = screen.getByRole('link', { name: /Skapa Min Första Lektion/i });
+    const getStartedLink = screen.getByRole('link', { name: /Utforska Verktygen/i });
     expect(getStartedLink).toBeInTheDocument();
     expect(getStartedLink).toHaveAttribute('href', '/login');
   });

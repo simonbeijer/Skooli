@@ -2,7 +2,7 @@ describe('Generate Lesson Workflow', () => {
   it('should successfully submit lesson generation form and trigger API call', () => {
     // Step 1: Navigate to home and login
     cy.visit('/');
-    cy.contains('Skapa Min Första Lektion').click();
+    cy.contains('Utforska Verktygen').click();
     
     // Login
     cy.get('input[name="email"]').type('user@example.com');
