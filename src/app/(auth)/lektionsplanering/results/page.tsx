@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Button from "../../components/button";
+import Button from "@/components/button";
 import ReactMarkdown from "react-markdown";
 
 // Enhanced data structure interface
@@ -151,7 +151,7 @@ export default function ResultsPage() {
             {error || "Ingen AI-genererad lektionsplan hittades."}
           </p>
           <Button
-            callBack={() => router.push("/generate")}
+            callBack={() => router.push("/lektionsplanering")}
             text="Tillbaka till formulär"
             variant="primary"
             className="bg-primary hover:bg-primary-dark border-primary"
@@ -167,7 +167,7 @@ export default function ResultsPage() {
       <div className="relative z-10 mt-8 mb-2">
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-end">
           <Link
-            href="/generate"
+            href="/lektionsplanering"
             className="flex items-center space-x-2 text-grey hover:text-primary transition-colors"
           >
             <svg
@@ -300,7 +300,7 @@ export default function ResultsPage() {
             Behöver du göra ändringar? Kopiera texten och redigera i ditt
             favoritprogram.
           </p>
-          <Link href="/generate">
+          <Link href="/lektionsplanering">
             <Button text="Skapa Ny Lektionsplan" variant="secondary" />
           </Link>
         </div>

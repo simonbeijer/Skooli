@@ -15,7 +15,7 @@ describe('Generate Lesson Workflow', () => {
     
     // Step 3: Navigate to generate lesson page
     cy.contains('Skapa Ny Lektion').click();
-    cy.url().should('include', '/generate');
+    cy.url().should('include', '/lektionsplanering');
     cy.contains('Skapa Din Lektionsplan').should('be.visible');
     
     // Step 4: Fill out the lesson generation form

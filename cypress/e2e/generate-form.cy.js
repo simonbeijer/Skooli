@@ -10,7 +10,7 @@ describe('Generate Form Validation', () => {
     // Navigate to generate form
     cy.url().should('include', '/dashboard');
     cy.contains('Skapa Ny Lektion').click();
-    cy.url().should('include', '/generate');
+    cy.url().should('include', '/lektionsplanering');
     
     // Test form validation - button should be disabled initially
     cy.contains('button', 'Generera Lektionsplan').should('be.disabled');

@@ -3,11 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Button from "../../components/button";
-import InputField from "../../components/inputField";
-import TextAreaField from "../../components/textAreaField";
-import FormSelect from "../../components/formSelect";
-import Spinner from "../../components/spinner";
+import Button from "@/components/button";
+import InputField from "@/components/inputField";
+import TextAreaField from "@/components/textAreaField";
+import FormSelect from "@/components/formSelect";
+import Spinner from "@/components/spinner";
 
 export default function GeneratePage() {
   const router = useRouter();
@@ -44,8 +44,8 @@ export default function GeneratePage() {
     setIsGenerating(true);
     
     try {
-      // Real API call to /api/generate-plan
-      const response = await fetch('/api/generate-plan', {
+      // Real API call to /api/lektionsplanering/generate-plan
+      const response = await fetch('/api/lektionsplanering/generate-plan', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ export default function GeneratePage() {
       
       localStorage.setItem('lessonPlanData', JSON.stringify(enhancedData));
       
-      router.push('/results');
+      router.push('/lektionsplanering/results');
       
     } catch (error) {
       console.error('API Generation Error:', error);

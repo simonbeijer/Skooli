@@ -74,7 +74,7 @@ const Header = ({ state }: HeaderProps) => {
             {currentState === 'authenticated' && (
               <>
                 <Link href="/dashboard" className="sk-header__link">Dashboard</Link>
-                <Link href="/generate" className="sk-header__link">Skapa Lektion</Link>
+                <Link href="/lektionsplanering" className="sk-header__link">Skapa Lektion</Link>
               </>
             )}
           </nav>

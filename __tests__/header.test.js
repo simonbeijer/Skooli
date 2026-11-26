@@ -68,7 +68,7 @@ describe('Header länkar', () => {
   test('authenticated: Dashboard, Skapa Lektion', () => {
     const { container } = renderHeader('authenticated');
     expect(linkByText(container, 'Dashboard')).toHaveAttribute('href', '/dashboard');
-    expect(linkByText(container, 'Skapa Lektion')).toHaveAttribute('href', '/generate');
+    expect(linkByText(container, 'Skapa Lektion')).toHaveAttribute('href', '/lektionsplanering');
     expect(linkByText(container, 'Dashboard')).toHaveClass('sk-header__link');
     expect(linkByText(container, 'Logga In')).toBeUndefined();
   });

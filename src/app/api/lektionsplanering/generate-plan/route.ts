@@ -8,9 +8,9 @@
 
 import { GoogleGenAI, HarmCategory, HarmBlockThreshold } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
-import { findRelevantCurriculum } from "@/lib/curriculum-data";
+import { findRelevantCurriculum } from "@/modules/lektionsplanering/lib/curriculum-data";
 import { verifyAuth } from "@/lib/auth";
-import { logPrompt } from "@/lib/prompt-logger";
+import { logPrompt } from "@/modules/lektionsplanering/lib/prompt-logger";
 
 // ============================================================================
 // TYPE DEFINITIONS
